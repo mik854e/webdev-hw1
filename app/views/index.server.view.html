@@ -1,5 +1,9 @@
 {% extends 'layout.server.view.html' %}
 
 {% block content %}
-	<section data-ui-view></section>
+
+{% for agent in agents %}
+<a href='/agents/{{agent.firstName}}'>{{agent.firstName}}</a>
+{% endfor %}
+
 {% endblock %}
