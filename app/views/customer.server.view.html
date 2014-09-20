@@ -1,0 +1,45 @@
+{% extends 'layout.server.view.html' %}
+
+{% block content %}
+
+<div>
+	<h2>{{customer.firstName}} {{customer.lastName}}</h2>
+  <ul>
+      <li><b>Email:</b> john.smith1@gmail.com</li>
+      <li><b>Phone Number:</b> 123-456-7890</li>
+  </ul>
+
+<div>
+    <form name="contactForm">
+      <fieldset>
+        <div class="form-group">
+          <label for="communicationType">Communication Type</label>
+          <input type="text" id="communicationType" name="communicationType">
+        </div>
+        <div class="form-group">
+          <label for="summary">Summary</label>
+          <textarea rows="4" cols="50" id="summary" name="summary"></textarea>
+        </div>
+        <div class="text-center form-group">
+          <button type="submit" class="btn btn-large btn-primary">Save</button>
+        </div>
+      </fieldset>
+    </form>
+</div>
+
+<h3>Contact History</h3>
+  <table style='width=50%'>
+      <tr>
+        <th>Timestamp</th>
+        <th>Communication Type</th> 
+        <th>Summary</th>
+      </tr>
+      {% for contact in contacts %}
+        <tr>
+          <td>{{contact.timeStamp}}</td>
+          <td>{{contact.communicationType}}</td> 
+          <td>{{contact.summary}}</td>
+        </tr>
+      {% endfor %}
+
+{% endblock %}
