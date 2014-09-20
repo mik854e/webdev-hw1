@@ -6,4 +6,5 @@ module.exports = function(app) {
 	app.route('/').get(core.index);
 	app.route('/agents/:name').get(core.getAgent);
 	app.route('/customers/:name').get(core.getCustomer);
+
 };
