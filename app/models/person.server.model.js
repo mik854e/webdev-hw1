@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 var validateRole = function(role) {
-	return ((role == 'consumer') || (role == 'agent'))
+	return ((role === 'consumer') || (role === 'agent'));
 };
 
 var PersonSchema = new Schema({
@@ -32,4 +32,4 @@ var PersonSchema = new Schema({
 	}
 });
 
-mongoose.model('Person', personSchema);
+mongoose.model('Person', PersonSchema);

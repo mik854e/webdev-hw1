@@ -2,8 +2,8 @@
 
 module.exports = function(app) {
 	// Root routing
-	var person = require('../../app/controllers/person');
+	var person = require('../../app/controllers/persons');
 	app.route('/person/:id').get(person.getInfo);
 	app.route('/person/:agentId/create-relationship').post(person.createRelationship);
-	app.route('/person/:agentId/contact-history/:consumerId').get(person.getContactHistory);
+	// app.route('/person/:agentId/contact-history/:consumerId').get(person.getContactHistory);
 };
