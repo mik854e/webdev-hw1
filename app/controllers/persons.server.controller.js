@@ -45,6 +45,20 @@ exports.getInfo = function(req, res, id) {
 	return Person.find({_id: id});
 };
 
+//they will only need to be able to change their phone # and email
+exports.updateInfo = function(req,res, id,){
+	var phone_update = req.body.phoneNumber;
+	var email_update = req.body.email;
+	Person.update(
+	{ _id: id},
+	{
+		phoneNumber: phone_update,
+		email: email_update
+	}
+	));
+}
+
+
 
 
 var _getConsumersForAgent = function(agentId) {
@@ -76,6 +90,35 @@ exports.createRelationship = function(req, res, agentId) {
 		consumers: _getConsumersForAgent(agentId)
 	});
 };
+
+exports.destroyRelationship = function (req, res, agentId) {
+	var consumerId = req.body.consumerId;
+	Person.update{
+		{ _id: consumerId},
+		{
+			$unset: {
+				agent: agentId
+			}
+		}
+	};
+
+	Person.update(
+		{_id: agentId},
+		{
+			$pull: {
+				consumers: consumerId
+			}
+		}
+	);
+
+	};
+	res.render('agents', {
+		consumers: _getConsumersForAgent(agentId)
+	});
+
+
+};
+
 
 // exports.getContactHistory = function(req, res, agentId, consumerId) {
 // 	var messages = message.find ( 
