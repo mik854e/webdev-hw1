@@ -5,22 +5,34 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	Person = mongoose.model('Person');
 
-var _getAllAgents = function() {
-	return Person.find({role: 'agent'});
-};
+
+function _getAllAgents(res) {
+	var persons = Person.find({role: 'agent'}, function(err, agents) {
+		res.render('index', {
+			agents: agents
+		});
+	});
+}
 
 
 exports.signup = function(req, res) {
-	var person = new Person(req.body);
+	// var person = new Person(req.body);
+	console.log('hi');
+	var person = new Person({
+		firstName: 'Bob',
+	    lastName : 'Smith',
+	    phoneNumber: '7222342345',
+	    email: 'bob@gmail.com',
+	    role: 'agent'
+	});
+
 	person.save(function(err) {
 		if (err) {
 			return 'error';
 			// return res.status(400).send({
 				// message: errorHandler.getErrorMessage(err)
 		} else {
-			res.render('index', {
-				agents: _getAllAgents()
-			});
+			_getAllAgents(res);
 		}
 	});
 };
