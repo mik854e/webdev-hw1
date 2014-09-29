@@ -22,10 +22,6 @@ var PersonSchema = new Schema({
 		type: String,
 		trim: true,
 		default: ''
-	}, 
-	role: {
-		type: String,
-		validate: [validateRole, 'Either consumer or agent']
 	},
 	phoneNumber: {
 		type: String
