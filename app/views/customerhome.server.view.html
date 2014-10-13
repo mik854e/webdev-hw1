@@ -5,8 +5,8 @@
 <div>
 	<h2>{{agent.firstName}} {{agent.lastName}}</h2>
   <ul>
-      <li><b>Email:</b>agent.email</li>
-      <li><b>Phone Number:</b>agent.phone</li>
+      <li><b>Email:</b>{{agent.email}}</li>
+      <li><b>Phone Number:</b>{{agent.phone}}</li>
   </ul>
 
 <h3>Contact History</h3>
@@ -16,7 +16,7 @@
     <th>Communication Type</th> 
     <th>Summary</th>
   </tr>
-  {% for contact in contacts %}
+  {% for contact in contactHistory %}
     <tr>
       <td>{{contact.timeStamp}}</td>
       <td>{{contact.communicationType}}</td> 
