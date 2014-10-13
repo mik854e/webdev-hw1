@@ -1,0 +1,28 @@
+
+{% extends 'layout.server.view.html' %}
+
+{% block content %}
+
+<div>
+	<h2>{{agent.firstName}} {{agent.lastName}}</h2>
+  <ul>
+      <li><b>Email:</b>agent.email</li>
+      <li><b>Phone Number:</b>agent.phone</li>
+  </ul>
+
+<h3>Contact History</h3>
+  <table style='width=50%'>
+      <tr>
+        <th>Timestamp</th>
+        <th>Communication Type</th> 
+        <th>Summary</th>
+      </tr>
+      {% for contact in contacts %}
+        <tr>
+          <td>{{contact.timeStamp}}</td>
+          <td>{{contact.communicationType}}</td> 
+          <td>{{contact.summary}}</td>
+        </tr>
+      {% endfor %}
+
+{% endblock %}
