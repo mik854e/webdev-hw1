@@ -13,18 +13,17 @@
   		</tr>
 
       {% for customer in customers %}
-  		<tr>
-    		<td><a href='/customers/{{customer.userName}}'>{{customer.firstName}} {{customer.lastName}}</td>
-    		<td>{{customer.email}}</td> 
-    		<td>{{customer.phoneNumber}}</td>
-  		</tr>
+    		<tr>
+      		<td><a href='/customers/{{customer.userName}}'>{{customer.firstName}} {{customer.lastName}}</td>
+      		<td>{{customer.email}}</td> 
+      		<td>{{customer.phoneNumber}}</td>
+    		</tr>
       {% endfor %}
-
 	</table>
 </div>
 
 <div>
-    <form name="contactForm">
+    <form name="contactForm" action="/agents/{{agent._id}}/create-contact" method="post">
       <fieldset>
         <div class="form-group">
           <label for="communicationType">Communication Type</label>
@@ -42,7 +41,7 @@
 </div>
 
 <div>
-    <form name="newCustomerForm" action="add/customer" method="post">
+    <form name="newCustomerForm" action="/agents/{{agent._id}}/customers" method="post">
       <fieldset>
         <h3>Add a New Customer</h3>
         <div class="form-group">
