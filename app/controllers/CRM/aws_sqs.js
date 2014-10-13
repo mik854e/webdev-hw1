@@ -9,7 +9,8 @@ AWS.config.loadFromPath(awsCredentialsPath);
 // Create a SQS client
 sqs = new AWS.SQS().client;
 
-sqs.receiveMessage({
+var receiveFromQueue = function (){
+  sqs.receiveMessage({
    QueueUrl: sqsQueueUrl,
    MaxNumberOfMessages: 1, // how many messages do we wanna retrieve?
    VisibilityTimeout: 60, // seconds - how long we want a lock on this job
@@ -26,6 +27,7 @@ sqs.receiveMessage({
       removeFromQueue(message);  // We'll do this in a second
    }
  });
+};
 
 var removeFromQueue = function(message) {
    sqs.deleteMessage({
@@ -36,3 +38,25 @@ var removeFromQueue = function(message) {
       err && console.log(err);
    });
 };
+
+
+/* SAMPLE
+outbound = {
+  MessageBody : JSON.stringify({ 
+    data: "Test Message", 
+    timestamp: new Date().getTime()
+    })  
+}
+*/
+var sendMessage = function(message){
+    var params = {
+        MessageBody: message, 
+        QueueUrl: sqsQueueUrl, 
+        DelaySeconds: 0
+      };
+    sqs.sendMessage(params, function(err, data) {
+      if (err) console.log(err, err.stack); // an error occurred
+      else     console.log(data);           // successful response
+    });)
+}; 
+
