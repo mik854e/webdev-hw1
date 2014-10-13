@@ -15,7 +15,7 @@ exports.createCustomer = function(req, res, agentID) {
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email
-	});
+	};
 	
 	agent_facade.createCustomer(customerInfo, agentID);
 
@@ -65,7 +65,7 @@ exports.getAgent = function(req, res, agentID) {
 	var customers = agent_facade.getCustomers(agentID);
 
 	res.render('agenthome', {
-		agent: agent
+		agent: agent,
 		customers: customers
 	});
 };

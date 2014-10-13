@@ -2,7 +2,7 @@
 
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
-	crm_services = requrie('./CRM/crm_services.js');
+	crm_services = require('../CRM/crm_services.js');
 
 exports.createCustomer = function(agentID, customerInfo) {
 	crm_services.createCustomer(agentID, customerInfo);

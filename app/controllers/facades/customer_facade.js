@@ -2,7 +2,7 @@
 
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
-	crm_services = require('./CRM/crm_services.js');
+	crm_services = require('../CRM/crm_services.js');
 
 exports.getAgent = function(agentID) {
 	return crm_services.getAgent(agentID);
