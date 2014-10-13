@@ -27,3 +27,15 @@ exports.getCustomer = function(agentID, customerID) {
 exports.getContactHistory = function(agentID, customerID) {
 	return crm_services.getContactHistory(agentID, customerID);
 };
+
+exports.createAgent = function(agentInfo) {
+	crm_services.createAgent(agentInfo);
+};
+
+exports.deleteAgent = function(agentID) {
+	crm_services.deleteAgent(agentID);
+};
+
+exports.getAgent = function(agentID) {
+	return crm_services.getAgent(agentID);
+};

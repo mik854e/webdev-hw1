@@ -40,6 +40,26 @@ exports.createContact = function(req, res, agentID) {
 	});
 };
 
+exports.createAgent = function(req, res) {
+	var firstName = req.body.firstName;
+	var lastName = req.body.lastName;
+	var email = req.body.email;
+	var phoneNumber = req.body.phoneNumber;
+
+	var agentInfo = {
+		firstName: firstName,
+	    lastName: lastName,
+	    phoneNumber: phoneNumber,
+	    email: email
+	});
+
+	agent_facade.createAgent(agentInfo);
+
+	res.render('success', {
+		msg: 'success'
+	});
+};
+
 exports.getAgent = function(req, res, agentID) {
 	var agent = agent_facade.getAgent(agentID);
 	var customers = agent_facade.getCustomers(agentID);
