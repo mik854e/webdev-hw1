@@ -33,6 +33,8 @@ exports.createRelationship = function(agentID, customerID) {
 			}
 		}
 	);
+
+	console.log('create new relationship');
 /*
 	res.render('agents', {
 		consumers: _getConsumersForAgent(agentId)
@@ -60,7 +62,7 @@ exports.deleteRelationship = function(agentID, customerID){
 			}
 		}
 	);
-
+	console.log('deleted relationship');
 };
 
 // Establishes link between Agent and Customer for contact interaction
@@ -74,60 +76,67 @@ exports.createContactInteraction = function(agentID, customerID, contactType){
 			}
 		}
 	);
+	console.log('create new contact interaction');
+};
+
+exports.contactHistory = function(agentID, customerID){
+	Contact.find( {agentID: agentId, customerID: customerID}, function(err, contact){
+		return contact
+	});
 };
 
 // Agent
 exports.createAgent = function(agentID){
 	agentDS.createAgent(agentID);
-}
+};
 
 exports.deleteAgent = function(agentID){
 	agentDS.deleteAgent(agentID);
-}
+};
 
 exports.getAgent = function(agentID){
 	return agentDS.getAgent(agentID);
-}
+};
 
 export.updateAgent = function(agentID, newInfo){
 	agentDS.updateAgent(agentID, newInfo);
-}
+};
 
 
 // Contact
 exports.createContact = function(contactID){
 	contactDS.createContact(agentID);
-}
+};
 
 exports.deleteContact = function(contactID){
 	contactDS.deleteContact(agentID);
-}
+};
 
 exports.getContact = function(contactID){
 	return contactDS.getContact(agentID);
-}
+};
 
 export.updateContact = function(contactID, newInfo){
 	contactDS.updateContact(agentID, newInfo);
-}
+};
 
 
 // Customer
 exports.createCustomer = function(customerID){
 	customerDS.createCustomer(customerID);
-}
+};
 
 exports.deleteCustomer = function(customerID){
 	customerDS.deleteCustomer(customerID);
-}
+};
 
 exports.getCustomer = function(customerID){
 	return customerDS.getCustomer(customerID);
-}
+};
 
 export.updateCustomer = function(customerID, newInfo){
 	customerDS.updateCustomer(customerID, newInfo);
-}
+};
 
 
 /*
