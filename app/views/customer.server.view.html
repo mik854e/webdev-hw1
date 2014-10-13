@@ -5,8 +5,8 @@
 <div>
 	<h2>{{customer.firstName}} {{customer.lastName}}</h2>
   <ul>
-      <li><b>Email:</b> john.smith1@gmail.com</li>
-      <li><b>Phone Number:</b> 123-456-7890</li>
+      <li><b>Email:</b>{{customer.email}}</li>
+      <li><b>Phone Number:</b>{{customer.phoneNumber}}</li>
   </ul>
 
 <div>
@@ -34,12 +34,13 @@
         <th>Communication Type</th> 
         <th>Summary</th>
       </tr>
-      {% for contact in contacts %}
-        <tr>
-          <td>{{contact.timeStamp}}</td>
-          <td>{{contact.communicationType}}</td> 
-          <td>{{contact.summary}}</td>
-        </tr>
+      {% for contact in contactHistory %}
+      <tr>
+        <td>{{contact.timeStamp}}</td>
+        <td>{{contact.communicationType}}</td> 
+        <td>{{contact.summary}}</td>
+      </tr>
       {% endfor %}
+  </table>
 
 {% endblock %}
