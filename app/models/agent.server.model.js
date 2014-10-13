@@ -3,11 +3,8 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-var validateRole = function(role) {
-	return ((role === 'consumer') || (role === 'agent'));
-};
 
-var PersonSchema = new Schema({
+var AgentSchema = new Schema({
 	firstName: {
 		type: String,
 		trim: true,
@@ -22,10 +19,14 @@ var PersonSchema = new Schema({
 		type: String,
 		trim: true,
 		default: ''
-	},
+	}, 
 	phoneNumber: {
 		type: String
+	},
+	customers: {
+		//IDs of customers
+		type: Array
 	}
 });
 
-mongoose.model('Person', PersonSchema);
+mongoose.model('Agent', AgentSchema);
