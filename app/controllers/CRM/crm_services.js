@@ -1,11 +1,15 @@
 'use strict';
 
+var agentDS = require('./app/controllers/data_services/agentDS.js');
+var contactDS = require('./app/controllers/data_services/contactDS.js');
+var customerDS = require('./app/controllers/data_services/customerDS.js');
 var _ = require('lodash'),
 	// errorHandler = require('errors'),
 	mongoose = require('mongoose'),
 	Contact = mongoose.model('Contact'),
 	Customer = mongoose.model('Customer'),
 	Agent = mongoose.model('Agent');
+
 
 // Relationship between Customer and Agent
 
@@ -71,6 +75,60 @@ exports.createContactInteraction = function(agentID, customerID, contactType){
 		}
 	);
 };
+
+// Agent
+exports.createAgent = function(agentID){
+	agentDS.createAgent(agentID);
+}
+
+exports.deleteAgent = function(agentID){
+	agentDS.deleteAgent(agentID);
+}
+
+exports.getAgent = function(agentID){
+	return agentDS.getAgent(agentID);
+}
+
+export.updateAgent = function(agentID, newInfo){
+	agentDS.updateAgent(agentID, newInfo);
+}
+
+
+// Contact
+exports.createContact = function(contactID){
+	contactDS.createContact(agentID);
+}
+
+exports.deleteContact = function(contactID){
+	contactDS.deleteContact(agentID);
+}
+
+exports.getContact = function(contactID){
+	return contactDS.getContact(agentID);
+}
+
+export.updateContact = function(contactID, newInfo){
+	contactDS.updateContact(agentID, newInfo);
+}
+
+
+// Customer
+exports.createCustomer = function(customerID){
+	customerDS.createCustomer(customerID);
+}
+
+exports.deleteCustomer = function(customerID){
+	customerDS.deleteCustomer(customerID);
+}
+
+exports.getCustomer = function(customerID){
+	return customerDS.getCustomer(customerID);
+}
+
+export.updateCustomer = function(customerID, newInfo){
+	customerDS.updateCustomer(customerID, newInfo);
+}
+
 
 /*
 exports.updateRelationship = function(agent, customer){
