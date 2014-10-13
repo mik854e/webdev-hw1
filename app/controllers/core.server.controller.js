@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 exports.index = function(req, res) {
-	res.render('newsignin', {
+	res.render('signin', {
 		agents : [
 			    {
 			     firstName: 'Bob',
