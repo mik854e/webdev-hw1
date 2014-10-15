@@ -39,3 +39,7 @@ exports.deleteAgent = function(agentID) {
 exports.getAgent = function(agentID) {
 	return crm_services.getAgent(agentID);
 };
+
+exports.getAgents = function() {
+	return crm_services.getAgents();
+};
