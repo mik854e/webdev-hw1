@@ -7,7 +7,8 @@ var _ = require('lodash'),
 exports.getAgent = function(agentID) {
 	crm_services.getAgent(agentID, function(agent) {
 		callback(agent);
-	}
+	});
+};
 
 exports.getContactHistory = function(agentID, customerID) {
 	crm_services.getContactHistory(agentID, customerID, function(contacts) {
