@@ -12,6 +12,29 @@ var _ = require('lodash'),
 
 
 // Relationship between Customer and Agent
+var create_Relationship = function(agentID, customerID, callback){
+	Agent.update(
+		{ _id: agentID }, 
+		{ 
+			$addToSet: {
+				consumers: customerID
+			}
+			
+		}
+	);
+
+	Customer.update( 
+		{ _id: customerID }, 
+		{
+			$set: {
+				agent: agentID
+			}
+		}
+	);
+
+	console.log('create new relationship');
+};
+
 
 // // Establishes Relationship between Agent and Customer
 exports.createRelationship = function(agentID, customerID) {
@@ -21,66 +44,59 @@ exports.createRelationship = function(agentID, customerID) {
 		callback(agentID, customerID);
 	});
 
-	res.render('agents', {
-		consumers: _getConsumersForAgent(agentId)
-	});
+	//res.render('agents', {
+	//	consumers: _getConsumersForAgent(agentId)
+	//});
 
 };
 
-// var create_Relationship = function(agentID, customerID, callback){
-// 	Agent.update(
-// 		{ _id: agentID }, 
-// 		{ 
-// 			$addToSet: {
-// 				consumers: customerID
-// 			}
+var delete_Relationship = function(agentID, customerID, callback){
+	Agent.update(
+		{_id: agentID},
+		{
+			$pull: {
+				customers: customerID
+			}
 			
-// 		}
-// 	);
+		}
+	);
 
-// 	Customer.update( 
-// 		{ _id: customerID }, 
-// 		{
-// 			$set: {
-// 				agent: agentID
-// 			}
-// 		}
-// 	);
+	Customer.update(
+		{_id: customerID},
+		{
+			$unset: {
+				agent: agentID
+			}
+		}
+	);
+	console.log('deleted relationship');
+};
 
-// 	console.log('create new relationship');
-// };
-
-// // // Deletes relationship between Agent and Cusomter
-// exports.deleteRelationship = function(agentID, customerID, callback){
-// 	console.log('delete relationship');
-// 	delete_Relationship( agentID, customerID, function(callback){
-// 		console.log('delete relationship');
-// 		callback(agentID, customerID, callback);
-// 	});
+// Deletes relationship between Agent and Cusomter
+exports.deleteRelationship = function(agentID, customerID, callback){
+	console.log('delete relationship');
+	delete_Relationship( agentID, customerID, function(callback){
+		console.log('delete relationship');
+		callback(agentID, customerID, callback);
+	});
 	
-// };
+};
 
-// var delete_Relationship = function(agentID, customerID, callback){
-// 	Agent.update( function(agent)
-// 		{_id: agentID},
-// 		{
-// 			$pull: {
-// 				consumers: consumerID
-// 			}
-			
-// 		}
-// 	);
 
-// 	Customer.update(
-// 		{_id: customerID},
-// 		{
-// 			$unset: {
-// 				agent: agentID
-// 			}
-// 		}
-// 	);
-// 	console.log('deleted relationship');
-// };
+var updateContact = function(agentID, customerID, contactType){
+	console.log('create new contact interaction');
+	Contact.update(
+		{$and: 
+			[{_agentId: agentID}, 
+			{_customerId: customerID}]
+		},
+		{
+			$addToSet: {
+				contactType: contactType
+			}
+		}
+	);
+};
 
 // // Establishes link between Agent and Customer for contact interaction
 // // ContactType: Email, Phone, 
@@ -92,38 +108,24 @@ exports.createContactInteraction = function(agentID, customerID, contactType, ca
 	});
 };
 
-// var updateContact = function(agentID, customerID, contactType){
-// 	console.log('create new contact interaction');
-// 	Contact.update(
-// 		$and [{_agentId: agentID}, {_customerId: customerID}],
-// 		{
-// 			$addToSet: {
-// 				contactType: contactType
-// 			}
-// 		}
-// 	);
-// };
-
-
+var getContactHistory = function(agentID, customerID, callback){
+	console.log('get contact history in crm call');
+	Contact.find( {agentID: agentID, customerID: customerID}, function(err, contact){
+		callback(contact);
+	});
+};
 
 exports.contactHistory = function(agentID, customerID, callback){
 	console.log('get contact history');
 	getContactHistory(agentID, customerID, function(contact){
-		console.log('get contact history between')
+		console.log('get contact history between');
 		console.log(agentID);
 		console.log(customerID);
 		callback(agentID, customerID);
 	});
 };
 
-var getContactHistory = function(agentID, customerID, callback){
-	console.log('get contact history in crm call');
-	Contact.find( {agentID: agentId, customerID: customerID}, function(err, contact){
-		callback(contact);
-	});
-};
-
-// // Agent
+// Agent
 exports.createAgent = function(callback){
 	console.log('create agent in crm called');
 	agentDS.createAgent(function(agent) {
@@ -132,13 +134,13 @@ exports.createAgent = function(callback){
 	});
 };
 
-// exports.deleteAgent = function(callback){
-// 	console.log('delete agent in crm called');
-// 	agentDS.deleteAgent(function(agent){
-// 		console.log(agent);
-// 		callback(agent);
-// 	});
-// };
+exports.deleteAgent = function(callback){
+	console.log('delete agent in crm called');
+	agentDS.deleteAgent(function(agent){
+		console.log(agent);
+		callback(agent);
+	});
+};
 
 exports.getAgent = function(callback){
 	console.log('get an agent in crm called');
@@ -156,13 +158,13 @@ exports.getAgents = function(callback){
 	});
 };
 
-// exports.updateAgent = function(agent, newInfo, callback){
-// 	console.log('update agent in crm called');
-// 	agentDS.updateAgent(function (agent, newInfo) {
-// 		console.log(agent);
-// 		callback(agent, newInfo);
-// 	});
-// };
+exports.updateAgent = function(agent, newInfo, callback){
+	console.log('update agent in crm called');
+	agentDS.updateAgent(function (agent, newInfo) {
+		console.log(agent);
+		callback(agent, newInfo);
+	});
+};
 
 
 // Contact
@@ -174,13 +176,13 @@ exports.createContact = function(callback){
 	});
 };
 
-// exports.deleteContact = function(callback){
-// 	console.log('delete contact in crm called');
-// 	contactDS.deleteContact(function (agent) {
-// 		console.log(agent);
-// 		callback(agent);
-// 	});
-// };
+exports.deleteContact = function(callback){
+	console.log('delete contact in crm called');
+	contactDS.deleteContact(function (agent) {
+		console.log(agent);
+		callback(agent);
+	});
+};
 
 exports.getContact = function(callback){
 	console.log('get Contanct in crm called');
@@ -190,13 +192,13 @@ exports.getContact = function(callback){
 	});
 };
 
-// exports.updateContact = function(contact, newInfo, callback){
-// 	console.log('update contact in crm called');
-// 	contactDS.updateContact(function (contact, newInfo) {
-// 		console.log(contact);
-// 		callback(contact, newInfo);
-// 	});
-// };
+exports.updateContact = function(contact, newInfo, callback){
+	console.log('update contact in crm called');
+	contactDS.updateContact(function (contact, newInfo) {
+		console.log(contact);
+		callback(contact, newInfo);
+	});
+};
 
 
 // Customer
@@ -208,13 +210,13 @@ exports.createCustomer = function(callback){
 	});
 };
 
-// exports.deleteCustomer = function(callback){
-// 	console.log('create customer in crm called');
-// 	customerDS.deleteCustomer(function (customer) {
-// 		console.log(customer);
-// 		callback(customer);
-// 	});
-// };
+exports.deleteCustomer = function(callback){
+	console.log('create customer in crm called');
+	customerDS.deleteCustomer(function (customer) {
+		console.log(customer);
+		callback(customer);
+	});
+};
 
 exports.getCustomer = function(callback){
 	console.log('get a customer in crm called');
@@ -222,6 +224,7 @@ exports.getCustomer = function(callback){
 		console.log(customer);
 		callback(customer);
 	});
+
 };
 
 exports.getCustomers = function(callback){
@@ -232,11 +235,10 @@ exports.getCustomers = function(callback){
 	});
 };
 
-// exports.updateCustomer = function(customer, newInfo, callback){
-// 	console.log('update a customer in crm called');
-// 	customerDS.getCustomer(function(customer, newInfo) {
-// 		console.log(customer);
-// 		callback(customer, newInfo);
-// 	});
-// };
-
+exports.updateCustomer = function(customer, newInfo, callback){
+	console.log('update a customer in crm called');
+	customerDS.getCustomer(function(customer, newInfo) {
+		console.log(customer);
+		callback(customer, newInfo);
+	});
+};
