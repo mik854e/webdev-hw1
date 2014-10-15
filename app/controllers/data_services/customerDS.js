@@ -25,9 +25,7 @@ exports.updateCustomer = function(customerID, newInfo) {
 		{ _id: customerID }, 
 		{ $set: newInfo }
 		);
-
 };
-
 
 exports.deleteCustomer = function(customerID) {
 	Customer.delete({ _id: customerID });

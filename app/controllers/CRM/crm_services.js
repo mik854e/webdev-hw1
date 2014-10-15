@@ -15,6 +15,19 @@ var _ = require('lodash'),
 
 // Establishes Relationship between Agent and Customer
 exports.createRelationship = function(agentID, customerID) {
+	console.log('delete relationship');
+	create_Relationship( agentID, customerID, function(callback){
+		console.log('delete relationship');
+		callback(agentID, customerID);
+	});
+/*
+	res.render('agents', {
+		consumers: _getConsumersForAgent(agentId)
+	});
+*/
+};
+
+var create_Relationship = function(agentID, customerID, callback){
 	Agent.update(
 		{ _id: agentID }, 
 		{ 
@@ -35,16 +48,20 @@ exports.createRelationship = function(agentID, customerID) {
 	);
 
 	console.log('create new relationship');
-/*
-	res.render('agents', {
-		consumers: _getConsumersForAgent(agentId)
-	});
-*/
-};
+}
 
 // Deletes relationship between Agent and Cusomter
-exports.deleteRelationship = function(agentID, customerID){
-	Agent.update(
+exports.deleteRelationship = function(agentID, customerID, callback){
+	console.log('delete relationship');
+	delete_Relationship( agentID, customerID, function(callback){
+		console.log('delete relationship');
+		callback(agentID, customerID, callback);
+	});
+	
+};
+
+var delate_Relationship = function(agentID, customerID, callback){
+	Agent.update( function(agent)
 		{_id: agentID},
 		{
 			$pull: {
@@ -63,11 +80,21 @@ exports.deleteRelationship = function(agentID, customerID){
 		}
 	);
 	console.log('deleted relationship');
-};
+}
 
 // Establishes link between Agent and Customer for contact interaction
 // ContactType: Email, Phone, 
-exports.createContactInteraction = function(agentID, customerID, contactType){
+exports.createContactInteraction = function(agentID, customerID, contactType, callback){
+	console.log('create contact interaction');
+	updateContact(agentID, customerID, contactType, function(callback){
+		console.log('contact interaction');
+		callback(agentID, customerID, contactType);
+	});
+	
+};
+
+var updateContact = function(agentID, customerID, contactType){
+	console.log('create new contact interaction');
 	Contact.update(
 		$and [{_agentId: agentID}, {_customerId: customerID}],
 		{
@@ -76,26 +103,49 @@ exports.createContactInteraction = function(agentID, customerID, contactType){
 			}
 		}
 	);
-	console.log('create new contact interaction');
-};
+}
 
-exports.contactHistory = function(agentID, customerID){
-	Contact.find( {agentID: agentId, customerID: customerID}, function(err, contact){
-		return contact
+
+
+exports.contactHistory = function(agentID,, customerID, callback){
+	console.log('get contact history');
+	getContactHistory(agentID, customerID, function(contact){
+		console.log('get contact history between')
+		console.log(agentID);
+		console.log(customerID);
+		callback(agentID, customerID);
 	});
 };
 
+var getContactHistory = function(agentID, customerID, callback){
+	console.log('get contact history in crm call');
+	Contact.find( {agentID: agentId, customerID: customerID}, function(err, contact){
+		callback(contact);
+});
+
 // Agent
-exports.createAgent = function(agentID){
-	agentDS.createAgent(agentID);
+exports.createAgent = function(callback){
+	console.log('create agent in crm called');
+	agentDS.createAgent(function(agent) {
+		console.log(agent);
+		callback(agent);
+	});
 };
 
-exports.deleteAgent = function(agentID){
-	agentDS.deleteAgent(agentID);
+exports.deleteAgent = function(callback){
+	console.log('delete agent in crm called');
+	agentDS.deleteAgent(function(agent){
+		console.log(agent);
+		callback(agent);
+	});
 };
 
-exports.getAgent = function(agentID){
-	return agentDS.getAgent(agentID);
+exports.getAgent = function(callback){
+	console.log('get an agent in crm called');
+	agentDS.getAgent(function(agent) {
+		console.log(agent);
+		callback(agent);
+	});
 };
 
 exports.getAgents = function(callback){
@@ -106,52 +156,89 @@ exports.getAgents = function(callback){
 	});
 }
 
-exports.updateAgent = function(agentID, newInfo){
-	agentDS.updateAgent(agentID, newInfo);
+exports.updateAgent = function(agent, newInfo, callback){
+	console.log('update agent in crm called');
+	agentDS.updateAgent(function (agent, newInfo) {
+		console.log(agent);
+		callback(agent, newInfo);
+	});
 };
 
 
 // Contact
-exports.createContact = function(contactID){
-	contactDS.createContact(agentID);
+exports.createContact = function(callback){
+	console.log('create contact in crm called');
+	contactDS.createContact(function (agent) {
+		console.log(agent);
+		callback(agent);
+	});
 };
 
-exports.deleteContact = function(contactID){
-	contactDS.deleteContact(agentID);
+exports.deleteContact = function(callback){
+	console.log('delete contact in crm called');
+	contactDS.deleteContact(function (agent) {
+		console.log(agent);
+		callback(agent);
+	});
 };
 
-exports.getContact = function(contactID){
-	return contactDS.getContact(agentID);
+exports.getContact = function(callback){
+	console.log('get Contanct in crm called');
+	contactDS.getContact(function(contact) {
+		console.log(contact);
+		callback(contact);
+	});
 };
 
-exports.updateContact = function(contactID, newInfo){
-	contactDS.updateContact(agentID, newInfo);
+exports.updateContact = function(contact, newInfo, callback){
+	console.log('update contact in crm called');
+	contactDS.updateContact(function (contact, newInfo) {
+		console.log(contact);
+		callback(contact, newInfo);
+	});
 };
 
 
 // Customer
-exports.createCustomer = function(customerID){
-	customerDS.createCustomer(customerID);
+exports.createCustomer = function(callback){
+	console.log('create customer in crm called');
+	contactDS.updateContact(function (customer) {
+		console.log(customer);
+		callback(customer);
+	});
 };
 
-exports.deleteCustomer = function(customerID){
-	customerDS.deleteCustomer(customerID);
+exports.deleteCustomer = function(callback){
+	console.log('create customer in crm called');
+	customerDS.deleteCustomer(function (customer) {
+		console.log(customer);
+		callback(customer);
+	});
 };
 
-exports.getCustomer = function(customerID){
-	return customerDS.getCustomer(customerID);
-};
+exports.getCustomer = function(callback){
+	console.log('get a customer in crm called');
+	customerDS.getCustomer(function(customer) {
+		console.log(customer);
+		callback(customer);
+	});
 
-exports.getCustomers = function(){
-	return custoemrDS.getCustomers();
 }
 
-exports.getCustomers = function(){
-	return custoemrDS.getCustomers();
+exports.getCustomers = function(callback){
+	console.log('get customers in crm called');
+	customerDS.getCustomers(function(customers) {
+		console.log(customers);
+		callback(customers);
+	});
 }
 
-exports.updateCustomer = function(customerID, newInfo){
-	customerDS.updateCustomer(customerID, newInfo);
+exports.updateCustomer = function(customer, newInfo, callback){
+	console.log('update a customer in crm called');
+	customerDS.getCustomer(function(customer, newInfo) {
+		console.log(customer);
+		callback(customer, newInfo);
+	});
 };
 
 
