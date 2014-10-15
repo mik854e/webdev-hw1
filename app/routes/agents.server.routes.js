@@ -13,5 +13,5 @@ module.exports = function(app) {
 	// app.route('/agents/:id/customers').get(agent.getCustomers);
 	app.route('/agents/:id/customers/:id').get(agent.getCustomer);
 	
-	app.route('/agents/:id/create-contact').post(agent.createContact);
+	app.route('/agents/:agentID/customers/:customerID/create-contact').post(agent.createContact);
 };

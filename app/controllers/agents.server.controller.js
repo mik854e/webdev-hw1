@@ -29,9 +29,8 @@ exports.deleteCustomer = function(req, res, agentID) {
 	agent_facade.deleteCustomer(agentID, customerID);
 };
 
-exports.createContact = function(req, res, agentID) {
+exports.createContact = function(req, res, agentID, customerID) {
 	var contactType = req.body.contactType;
-	var customerID = req.body.customerID;
 
 	agent_facade.createContact(agentID, customerID, contactType);
 
