@@ -17,7 +17,7 @@ exports.createCustomer = function(req, res, agentID) {
 	    email: email
 	};
 	
-	agent_facade.createCustomer(customerInfo, agentID, function(err, customer) {
+	agent_facade.createCustomer(customerInfo, agentID, function(customer) {
 		res.render('success', {
 			msg: 'Customer created successfully!'
 		});
@@ -27,7 +27,7 @@ exports.createCustomer = function(req, res, agentID) {
 exports.deleteCustomer = function(req, res, agentID) {
 	customerID = req.body.customerID;
 
-	agent_facade.deleteCustomer(agentID, customerID, function(err) {
+	agent_facade.deleteCustomer(agentID, customerID, function() {
 		res.render('success', {
 			msg: 'Customer deleted successfully!'
 		});
@@ -37,7 +37,7 @@ exports.deleteCustomer = function(req, res, agentID) {
 exports.createContact = function(req, res, agentID, customerID) {
 	var contactType = req.body.contactType;
 
-	agent_facade.createContact(agentID, customerID, contactType, function(err) {
+	agent_facade.createContact(agentID, customerID, contactType, function() {
 		res.render('success', {
 			msg: 'Contact created successfully!'
 		});
@@ -57,7 +57,7 @@ exports.createAgent = function(req, res) {
 	    email: email
 	};
 
-	agent_facade.createAgent(agentInfo, function(err, agent) {
+	agent_facade.createAgent(agentInfo, function(agent) {
 		console.log(agent);
 		res.render('success', {
 			msg: 'Agent created successfully!'
@@ -67,8 +67,8 @@ exports.createAgent = function(req, res) {
 };
 
 exports.getAgent = function(req, res, agentID) {
-	agent_facade.getAgent(agentID, function(err, agent) {
-		agent_facade.getCustomers(agentID, function(err, customers) {
+	agent_facade.getAgent(agentID, function(agent) {
+		agent_facade.getCustomers(agentID, function(customers) {
 			res.render('agenthome', {
 				agent: agent,
 				customers: customers
@@ -88,8 +88,8 @@ exports.getAgents = function(req, res) {
 };
 
 exports.getCustomer = function(req, res, agentID, customerID) {
-	agent_facade.getCustomer(customerID, function(err, customer) {
-		agent_facade.getContactHistory(agentID, customerID, function(err, contactHistory) {
+	agent_facade.getCustomer(customerID, function(customer) {
+		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
 			res.render('customer', {
 				customer: customer,
 				contactHistory : contactHistory
