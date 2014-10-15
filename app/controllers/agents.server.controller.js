@@ -63,16 +63,15 @@ exports.createAgent = function(req, res) {
 };
 
 exports.getAgent = function(req, res, agentID) {
-	var agent = agent_facade.getAgent(agentID);
-	var customers = agent_facade.getCustomers(agentID);
-
-	res.render('agenthome', {
-		agent: agent,
-		customers: customers
+	agent_facade.getAgent(agentID, function(err, agent) {
+		agent_facade.getCustomers(agentID, function(err, customers) {
+			res.render('agenthome', {
+				agent: agent,
+				customers: customers
+			});
+		});
 	});
 };
-
-
 
 exports.getAgents = function(req, res) {
 	console.log('get agents called');
@@ -83,7 +82,6 @@ exports.getAgents = function(req, res) {
 	});
 
 };
-
 
 exports.getCustomer = function(req, res, agentID, customerID) {
 	var customer = agent_facade.getCustomer(customerID);

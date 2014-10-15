@@ -17,7 +17,9 @@ exports.createContact= function(agentID, customerID, contactType) {
 };
 
 exports.getCustomers = function(agentID) {
-	return crm_services.getCustomers(agentID);
+	crm_services.getCustomers(agentID, function(customers) {
+		callback(customers);
+	});
 };
 
 exports.getCustomer = function(agentID, customerID) {
@@ -37,7 +39,9 @@ exports.deleteAgent = function(agentID) {
 };
 
 exports.getAgent = function(agentID) {
-	return crm_services.getAgent(agentID);
+	crm_services.getAgent(agentID, function(agent) {
+		callback(agent);
+	});
 };
 
 exports.getAgents = function(callback) {
