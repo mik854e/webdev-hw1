@@ -24,6 +24,13 @@ exports.getAgent = function(agentID) {
 };
 
 
+exports.getAgents = function() {
+	Agent.find({}, function(err, agents) {
+		return agents;
+	});
+};
+
+
 exports.updateAgent = function(agentID, newInfo) {
 	var agent = Agent.update({ _id: agentID }, { $set: newInfo });
 };
