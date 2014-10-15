@@ -5,15 +5,21 @@ var _ = require('lodash'),
 	crm_services = require('../CRM/crm_services.js');
 
 exports.createCustomer = function(agentID, customerInfo) {
-	crm_services.createCustomer(agentID, customerInfo);
+	crm_services.createCustomer(agentID, customerInfo, function(customer) {
+		callback(customer);
+	});
 };
 
 exports.deleteCustomer = function(agentID, customerID) {
-	crm_services.deleteCustomer(agentID, customerID);
+	crm_services.deleteCustomer(agentID, customerID, function() {
+		callback();
+	});
 };
 
 exports.createContact= function(agentID, customerID, contactType) {
-	crm_services.createContact(agentID, customerID, contactType);
+	crm_services.createContact(agentID, customerID, contactType, function() {
+		callback();
+	});
 };
 
 exports.getCustomers = function(agentID) {
@@ -22,20 +28,28 @@ exports.getCustomers = function(agentID) {
 	});
 };
 
-exports.getCustomer = function(agentID, customerID) {
-	return crm_services.getCustomer(agentID, customerID);
+exports.getCustomer = function(customerID) {
+	crm_services.getCustomer(customerID, function(customer) {
+		callback(customer);
+	});
 };
 
 exports.getContactHistory = function(agentID, customerID) {
-	return crm_services.getContactHistory(agentID, customerID);
+	crm_services.getContactHistory(agentID, customerID, function(contactHistory) {
+		callback(contactHistory);
+	});
 };
 
 exports.createAgent = function(agentInfo) {
-	crm_services.createAgent(agentInfo);
+	crm_services.createAgent(agentInfo, function(agent) {
+		callback(agent);
+	});
 };
 
 exports.deleteAgent = function(agentID) {
-	crm_services.deleteAgent(agentID);
+	crm_services.deleteAgent(agentID, function() {
+		callback();
+	});
 };
 
 exports.getAgent = function(agentID) {

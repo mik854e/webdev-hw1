@@ -5,13 +5,18 @@ var _ = require('lodash'),
 	crm_services = require('../CRM/crm_services.js');
 
 exports.getAgent = function(agentID) {
-	return crm_services.getAgent(agentID);
-};
+	crm_services.getAgent(agentID, function(agent) {
+		callback(agent);
+	}
 
 exports.getContactHistory = function(agentID, customerID) {
-	return crm_services.getContactHistory(agentID, customerID)
+	crm_services.getContactHistory(agentID, customerID, function(contacts) {
+		callback(contacts);
+	});
 };
 
 exports.getCustomer = function(customerID) {
-	return crm_services.getCustomer(customerID)
+	crm_services.getCustomer(customerID, function(customer) {
+		callback(customer);
+	});
 };

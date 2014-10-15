@@ -5,13 +5,15 @@ var _ = require('lodash'),
 	customer_facade = require('./facades/customer_facade.js');
 
 exports.getAgent = function(req, res, customerID) {
-	var customer = customer_facade.getCustomer(customerID);
-	var agentID = customer.agentID;
-	var agent = customer_facade.getAgent(agentID);
-	var contactHistory = customer_facade.getContactHistory(agentID, customerID);
-
-	res.render('customerhome', {
-		agent: agent,
-		contactHistory: contactHistory
+	customer_facade.getCustomer(customerID, function(err, customer) {
+		var agentID = customer.agentID;
+		customer_facade.getAgent(agentID, function(err, agent) {
+			customer_facade.getContactHistory(agentID, customerID, function(err, contactHistory) {
+				res.render('customerhome', {
+					agent: agent,
+					contactHistory: contactHistory
+				});
+			});
+		});
 	});
 };

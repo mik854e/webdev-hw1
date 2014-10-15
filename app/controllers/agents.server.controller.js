@@ -17,26 +17,31 @@ exports.createCustomer = function(req, res, agentID) {
 	    email: email
 	};
 	
-	agent_facade.createCustomer(customerInfo, agentID);
-
-	res.render('success', {
-		msg: 'success'
+	agent_facade.createCustomer(customerInfo, agentID, function(err, customer) {
+		res.render('success', {
+			msg: 'Customer created successfully!'
+		});
 	});
 };
 
 exports.deleteCustomer = function(req, res, agentID) {
 	customerID = req.body.customerID;
-	agent_facade.deleteCustomer(agentID, customerID);
+
+	agent_facade.deleteCustomer(agentID, customerID, function(err) {
+		res.render('success', {
+			msg: 'Customer deleted successfully!'
+		});
+	});
 };
 
 exports.createContact = function(req, res, agentID) {
 	var contactType = req.body.contactType;
 	var customerID = req.body.customerID;
 
-	agent_facade.createContact(agentID, customerID, contactType);
-
-	res.render('agenthome', {
-		msg: 'Contact created successfully!'
+	agent_facade.createContact(agentID, customerID, contactType, function(err) {
+		res.render('success', {
+			msg: 'Contact created successfully!'
+		});
 	});
 };
 
@@ -84,11 +89,12 @@ exports.getAgents = function(req, res) {
 };
 
 exports.getCustomer = function(req, res, agentID, customerID) {
-	var customer = agent_facade.getCustomer(customerID);
-	var contactHistory = agent_facade.getContactHistory(agentID, customerID);
-
-	res.render('customer', {
-		customer: customer,
-		contactHistory : contactHistory
+	agent_facade.getCustomer(customerID, function(err, customer) {
+		agent_facade.getContactHistory(agentID, customerID, function(err, contactHistory) {
+			res.render('customer', {
+				customer: customer,
+				contactHistory : contactHistory
+			});
+		});
 	});
 };
