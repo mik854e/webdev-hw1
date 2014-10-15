@@ -98,8 +98,12 @@ exports.getAgent = function(agentID){
 	return agentDS.getAgent(agentID);
 };
 
-exports.getAgents = function(){
-	return agentDS.getAgents();
+exports.getAgents = function(callback){
+	console.log('get agents in crm called');
+	agentDS.getAgents(function(agents) {
+		console.log(agents);
+		callback(agents);
+	});
 }
 
 exports.updateAgent = function(agentID, newInfo){

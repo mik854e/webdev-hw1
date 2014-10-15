@@ -75,11 +75,13 @@ exports.getAgent = function(req, res, agentID) {
 
 
 exports.getAgents = function(req, res) {
+	console.log('get agents called');
 	agent_facade.getAgents(function(agents) {
 		res.render('allagents', {
 			agents: agents
 		});
 	});
+
 };
 
 

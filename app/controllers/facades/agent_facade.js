@@ -40,6 +40,10 @@ exports.getAgent = function(agentID) {
 	return crm_services.getAgent(agentID);
 };
 
-exports.getAgents = function() {
-	return crm_services.getAgents();
+exports.getAgents = function(callback) {
+	console.log('facade called');
+	crm_services.getAgents(function(agents) {
+		console.log(agents);
+		callback(agents);
+	});
 };
