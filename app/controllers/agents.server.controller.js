@@ -51,7 +51,7 @@ exports.createAgent = function(req, res) {
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email
-	});
+	};
 
 	agent_facade.createAgent(agentInfo);
 
