@@ -6,7 +6,7 @@
 	<h2>All Agents</h2>
   <ul>
     {% for agent in agents %}
-      <li><a href='/agents/{{agent.id}}'>{{agent.firstName}} {{agent.lastName}}</a></li>
+      <li><a href='/agents/{{agent._id}}'>{{agent.firstName}} {{agent.lastName}}</a></li>
     {% endfor %}
   </ul>
 </div>
