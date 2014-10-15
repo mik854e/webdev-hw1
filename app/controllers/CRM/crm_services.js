@@ -98,6 +98,10 @@ exports.getAgent = function(agentID){
 	return agentDS.getAgent(agentID);
 };
 
+exports.getAgents = function(){
+	return agentDS.getAgents();
+}
+
 exports.updateAgent = function(agentID, newInfo){
 	agentDS.updateAgent(agentID, newInfo);
 };
