@@ -3,7 +3,7 @@
 {% block content %}
 
 <div>
-	<a href='/agents/{{agent.firstName}}'>{{agent.firstName}}</a>
+	<a href='/agents/{{agent._id}}'>{{agent.firstName}}</a>
 	<h2>Your Customers</h2>
 	<table style='width=50%'>
   		<tr>
@@ -14,7 +14,7 @@
 
       {% for customer in customers %}
     		<tr>
-      		<td><a href='/customers/{{customer.userName}}'>{{customer.firstName}} {{customer.lastName}}</td>
+      		<td><a href='/customers/{{customer._id}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
       		<td>{{customer.email}}</td> 
       		<td>{{customer.phoneNumber}}</td>
     		</tr>
@@ -22,23 +22,6 @@
 	</table>
 </div>
 
-<div>
-    <form name="contactForm" action="/agents/{{agent._id}}/create-contact" method="post">
-      <fieldset>
-        <div class="form-group">
-          <label for="communicationType">Communication Type</label>
-          <input type="text" id="communicationType" name="communicationType">
-        </div>
-        <div class="form-group">
-          <label for="summary">Summary</label>
-          <input type="textarea" id="summary" name="summary">
-        </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-large btn-primary">Save</button>
-        </div>
-      </fieldset>
-    </form>
-</div>
 
 <div>
     <form name="newCustomerForm" action="/agents/{{agent._id}}/customers" method="post">
