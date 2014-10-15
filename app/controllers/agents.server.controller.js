@@ -72,13 +72,16 @@ exports.getAgent = function(req, res, agentID) {
 	});
 };
 
-exports.getAgents = function(req, res) {
-	var agents = agent_facade.getAgents();
 
-	res.render('allagents', {
-		agents: agents
+
+exports.getAgents = function(req, res) {
+	agent_facade.getAgents(function(agents) {
+		res.render('allagents', {
+			agents: agents
+		});
 	});
 };
+
 
 exports.getCustomer = function(req, res, agentID, customerID) {
 	var customer = agent_facade.getCustomer(customerID);
