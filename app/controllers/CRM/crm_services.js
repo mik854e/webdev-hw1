@@ -142,6 +142,14 @@ exports.getCustomer = function(customerID){
 	return customerDS.getCustomer(customerID);
 };
 
+exports.getCustomers = function(){
+	return custoemrDS.getCustomers();
+}
+
+exports.getCustomers = function(){
+	return custoemrDS.getCustomers();
+}
+
 exports.updateCustomer = function(customerID, newInfo){
 	customerDS.updateCustomer(customerID, newInfo);
 };
