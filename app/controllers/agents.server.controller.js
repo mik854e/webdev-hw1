@@ -35,7 +35,7 @@ exports.createContact = function(req, res, agentID) {
 
 	agent_facade.createContact(agentID, customerID, contactType);
 
-	res.render('success', {
+	res.render('agenthome', {
 		msg: 'success'
 	});
 };
@@ -53,11 +53,13 @@ exports.createAgent = function(req, res) {
 	    email: email
 	};
 
-	agent_facade.createAgent(agentInfo);
-
-	res.render('success', {
-		msg: 'success'
+	agent_facade.createAgent(agentInfo, function(err, agent) {
+		console.log(agent);
+		res.render('success', {
+			msg: 'Agent created successfully!'
+		});
 	});
+
 };
 
 exports.getAgent = function(req, res, agentID) {

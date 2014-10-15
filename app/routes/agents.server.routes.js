@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
 	var agent = require('../../app/controllers/agents');
-	// app.route('/agents').post(agent.createAgent);
+	app.route('/agents').post(agent.createAgent);
 	// app.route('/agents').get(agent.getAgents);
 	
 	// app.route('/agents/:id').delete(agent.deleteAgent);
