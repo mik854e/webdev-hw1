@@ -58,10 +58,8 @@ exports.getAgent = function(agentID, callback) {
 	});
 };
 
-exports.getAgents = function(callback, callback) {
-	console.log('facade called');
+exports.getAgents = function(callback) {
 	crm_services.getAgents(function(agents) {
-		console.log(agents);
 		callback(agents);
 	});
 };
