@@ -24,9 +24,11 @@ exports.getAgent = function(agentID) {
 };
 
 
-exports.getAgents = function() {
+exports.getAgents = function(callback) {
 	Agent.find({}, function(err, agents) {
-		return agents;
+		console.log('agents found');
+		console.log(agents);
+		callback(agents);
 	});
 };
 
