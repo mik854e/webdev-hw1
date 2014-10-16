@@ -5,20 +5,30 @@ var _ = require('lodash'),
 	Customer = mongoose.model('Customer');
 
 
-exports.createCustomer = function(customer) {
-	var new_customer = new Customer(customer);
-	new_customer.save(function(err) {
-		//throw exception
+exports.createCustomer = function(customerInfo, callback) {
+	var customer = new Customer(customerInfo);
+	customer.save(function(err, customer) {
+		callback();
 	});
 };
 
-
-exports.getCustomer = function(customerID) {
-	Customer.find({ _id: customerID }, function(err, customer) {
-		return customer;
+exports.getCustomer = function(customerID, callback) {
+	Customer.findOne({ _id: customerID }, function(err, customer) {
+		callback(customer);
 	});
 };
 
+exports.getCustomerByEmail = function(email, callback) {
+	Customer.findOne({ email: email }, function(err, customer) {
+		callback(customer);
+	});
+};
+
+exports.getCustomers = function(agentID, callback) {
+	Customer.find({ agentID: agentID }, function(err, customers) {
+		callback(customers);
+	});
+};
 
 exports.updateCustomer = function(customerID, newInfo) {
 	var customer = Customer.update(

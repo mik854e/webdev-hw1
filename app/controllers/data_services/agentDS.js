@@ -5,29 +5,28 @@ var _ = require('lodash'),
 	Agent = mongoose.model('Agent');
 
 
-exports.createAgent = function(agent) {
-/* Agent is a JSON object with all field required to update an agent*/
-	console.log(agent);
-	var new_agent = new Agent(agent);
-	console.log('created new agent');
-	new_agent.save(function(err) {
-		return err;
-		//throw exception
+exports.createAgent = function(agentInfo, callback) {
+	var agent = new Agent(agentInfo);
+	agent.save(function (err, agent) {
+		callback(agent);
 	});
 };
 
 
-exports.getAgent = function(agentID) {
-	Agent.find({ _id: agentID }, function(err, agent) {
-		return agent;
+exports.getAgent = function(agentID, callback) {
+	Agent.findOne({ _id: agentID }, function(err, agent) {
+		callback(agent);
 	});
 };
 
+exports.getAgentByEmail = function(email, callback) {
+	Agent.findOne({ email: email }, function(err, agent) {
+		callback(agent);
+	});
+};
 
 exports.getAgents = function(callback) {
 	Agent.find({}, function(err, agents) {
-		console.log('agents found');
-		console.log(agents);
 		callback(agents);
 	});
 };

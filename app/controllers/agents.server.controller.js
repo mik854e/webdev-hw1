@@ -4,7 +4,8 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	agent_facade = require('./facades/agent_facade.js');
 
-exports.createCustomer = function(req, res, agentID) {
+exports.createCustomer = function(req, res) {
+	var agentID = req.params.agentID;
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
 	var email = req.body.email;
@@ -14,18 +15,25 @@ exports.createCustomer = function(req, res, agentID) {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
-	    email: email
+	    email: email,
+	    agentID: agentID
 	};
 	
-	agent_facade.createCustomer(customerInfo, agentID, function(customer) {
-		res.render('success', {
-			msg: 'Customer created successfully!'
+	agent_facade.createCustomer(customerInfo, function(customer) {
+		agent_facade.getAgent(agentID, function(agent) {
+			agent_facade.getCustomers(agentID, function(customers) {
+				res.render('agenthome', {
+					agent: agent,
+					customers: customers
+				});
+			});
 		});
 	});
 };
 
-exports.deleteCustomer = function(req, res, agentID) {
-	customerID = req.body.customerID;
+exports.deleteCustomer = function(req, res) {
+	var agentID = req.params.agentID;
+	var customerID = req.body.customerID;
 
 	agent_facade.deleteCustomer(agentID, customerID, function() {
 		res.render('success', {
@@ -34,7 +42,10 @@ exports.deleteCustomer = function(req, res, agentID) {
 	});
 };
 
-exports.createContact = function(req, res, agentID, customerID) {
+exports.createContact = function(req, res) {
+	var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
+
 	var contactType = req.body.contactType;
 
 	agent_facade.createContact(agentID, customerID, contactType, function() {
@@ -58,15 +69,18 @@ exports.createAgent = function(req, res) {
 	};
 
 	agent_facade.createAgent(agentInfo, function(agent) {
+		console.log('CREATE');
 		console.log(agent);
-		res.render('success', {
-			msg: 'Agent created successfully!'
+		res.render('agenthome', {
+			agent: agent
 		});
 	});
 
 };
 
-exports.getAgent = function(req, res, agentID) {
+exports.getAgent = function(req, res) {
+	var agentID = req.params.agentID;
+
 	agent_facade.getAgent(agentID, function(agent) {
 		agent_facade.getCustomers(agentID, function(customers) {
 			res.render('agenthome', {
@@ -78,21 +92,63 @@ exports.getAgent = function(req, res, agentID) {
 };
 
 exports.getAgents = function(req, res) {
-	console.log('get agents called');
 	agent_facade.getAgents(function(agents) {
 		res.render('allagents', {
 			agents: agents
 		});
 	});
-
 };
 
-exports.getCustomer = function(req, res, agentID, customerID) {
+exports.signinAgent = function(req, res) {
+	var email = req.body.email;
+
+	agent_facade.getAgentByEmail(email, function(agent) {
+		agent_facade.getCustomers(agent._id.toString(), function(customers) {
+			res.render('agenthome', {
+				agent: agent,
+				customers: customers
+			});
+		});
+	});
+};
+
+exports.getCustomer = function(req, res) {
+	var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
+
 	agent_facade.getCustomer(customerID, function(customer) {
 		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
 			res.render('customer', {
+				agentID: agentID,
 				customer: customer,
 				contactHistory : contactHistory
+			});
+		});
+	});
+};
+
+exports.createContact = function(req, res) {
+	var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
+	var contactType = req.body.contactType;
+	var summary = req.body.summary;
+
+	var contactInfo = {
+		agentID: agentID,
+		customerID: customerID,
+		contactType: contactType,
+		summary: summary,
+		timestamp: new Date()
+	};
+
+	agent_facade.createContact(contactInfo, function() {
+		agent_facade.getCustomer(customerID, function(customer) {
+			agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+				res.render('customer', {
+					agentID: agentID,
+					customer: customer,
+					contactHistory : contactHistory
+				});
 			});
 		});
 	});

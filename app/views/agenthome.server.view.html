@@ -3,9 +3,12 @@
 {% block content %}
 
 <div>
-	<a href='/agents/{{agent._id}}'>{{agent.firstName}}</a>
-	<h2>Your Customers</h2>
+	<h2><a href='/agents/{{agent._id.toString()}}'>{{agent.firstName}} {{agent.lastName}}</a></h2>
+	<h3>Your Customers</h3>
 	<table style='width=50%'>
+    <col width="200">
+    <col width="200">
+    <col width="200">
   		<tr>
     		<th>Name</th>
     		<th>Email</th> 
@@ -14,7 +17,7 @@
 
       {% for customer in customers %}
     		<tr>
-      		<td><a href='/customers/{{customer._id}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
+      		<td><a href='/agents/{{agent._id.toString()}}/customers/{{customer._id.toString()}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
       		<td>{{customer.email}}</td> 
       		<td>{{customer.phoneNumber}}</td>
     		</tr>
@@ -24,24 +27,24 @@
 
 
 <div>
-    <form name="newCustomerForm" action="/agents/{{agent._id}}/customers" method="post">
+    <form name="newCustomerForm" action="/agents/{{agent._id.toString()}}/customers/add" method="post">
       <fieldset>
         <h3>Add a New Customer</h3>
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName">
+          <input type="text" id="firstName" name="firstName" required>
         </div>
         <div class="form-group">
           <label for="firstName">Last Name</label>
-          <input type="text" id="lastName" name="lastName">
+          <input type="text" id="lastName" name="lastName" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="text" id="email" name="email">
+          <input type="text" id="email" name="email" required>
         </div>
         <div class="form-group">
           <label for="phoneNumber">Phone</label>
-          <input type="text" id="phoneNumber" name="phoneNumber">
+          <input type="text" id="phoneNumber" name="phoneNumber" required>
         </div>
         <div class="text-center form-group">
           <button type="submit">Add Customer</button>

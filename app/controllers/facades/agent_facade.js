@@ -4,20 +4,12 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	crm_services = require('../CRM/crm_services.js');
 
-exports.createCustomer = function(agentID, customerInfo, callback) {
-	crm_services.createCustomer(agentID, customerInfo, function(customer) {
-		callback(customer);
-	});
+exports.createCustomer = function(customerInfo, callback) {
+	crm_services.createCustomer(customerInfo, callback);
 };
 
 exports.deleteCustomer = function(agentID, customerID, callback) {
 	crm_services.deleteCustomer(agentID, customerID, function() {
-		callback();
-	});
-};
-
-exports.createContact= function(agentID, customerID, contactType, callback) {
-	crm_services.createContact(agentID, customerID, contactType, function() {
 		callback();
 	});
 };
@@ -29,21 +21,19 @@ exports.getCustomers = function(agentID, callback) {
 };
 
 exports.getCustomer = function(customerID, callback) {
-	crm_services.getCustomer(customerID, function(customer) {
-		callback(customer);
-	});
+	crm_services.getCustomer(customerID, callback);
 };
 
 exports.getContactHistory = function(agentID, customerID, callback) {
-	crm_services.getContactHistory(agentID, customerID, function(contactHistory) {
-		callback(contactHistory);
-	});
+	crm_services.getContactHistory(agentID, customerID, callback);
+};
+
+exports.createContact = function(contactInfo, callback) {
+	crm_services.createContact(contactInfo, callback);
 };
 
 exports.createAgent = function(agentInfo, callback) {
-	crm_services.createAgent(agentInfo, function(agent) {
-		callback(agent);
-	});
+	crm_services.createAgent(agentInfo, callback);
 };
 
 exports.deleteAgent = function(agentID, callback) {
@@ -53,9 +43,11 @@ exports.deleteAgent = function(agentID, callback) {
 };
 
 exports.getAgent = function(agentID, callback) {
-	crm_services.getAgent(agentID, function(agent) {
-		callback(agent);
-	});
+	crm_services.getAgent(agentID, callback);
+};
+
+exports.getAgentByEmail = function(email, callback) {
+	crm_services.getAgentByEmail(email, callback);
 };
 
 exports.getAgents = function(callback) {

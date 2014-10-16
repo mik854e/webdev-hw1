@@ -25,7 +25,7 @@ var CustomerSchema = new Schema({
 	},
 	agentID: {
 		//IDs of customer
-		type: mongoose.Schema.Types.ObjectId
+		type: String
 	}
 });
 

@@ -5,13 +5,19 @@ var mongoose = require('mongoose'),
 
 var ContactSchema = new Schema({
 	agentID: {
-		type: mongoose.Schema.Types.ObjectId
+		type: String
 	},
 	customerID: {
-		type: mongoose.Schema.Types.ObjectId
+		type: String
 	}, 
 	contactType: {
 		type: String
+	},
+	summary : {
+		type: String
+	},
+	timestamp: {
+		type: Date
 	}
 });
 

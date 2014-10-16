@@ -16,8 +16,6 @@ exports.getContactHistory = function(agentID, customerID, callback) {
 	});
 };
 
-exports.getCustomer = function(customerID, callback) {
-	crm_services.getCustomer(customerID, function(customer) {
-		callback(customer);
-	});
+exports.getCustomerByEmail = function(email, callback) {
+	crm_services.getCustomerByEmail(email, callback);
 };

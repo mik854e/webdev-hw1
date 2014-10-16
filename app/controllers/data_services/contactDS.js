@@ -5,17 +5,17 @@ var _ = require('lodash'),
 	Contact = mongoose.model('Contact');
 
 
-exports.createContact = function(contact) {
-	var new_contact = new Contact(contact);
-	new_contact.save(function(err) {
-		//throw exception
+exports.createContact = function(contactInfo, callback) {
+	var contact = new Contact(contactInfo);
+	contact.save(function(err, contact) {
+		callback();
 	});
 };
 
 
-exports.getContact = function(contactID) {
-	Contact.find({ _id: contactID }, function(err, contact) {
-		return contact;
+exports.getContactHistory = function(agentID, customerID, callback) {
+	Contact.find({agentID: agentID, customerID: customerID}, function(err, contacts) {
+		callback(contacts);
 	});
 };
 

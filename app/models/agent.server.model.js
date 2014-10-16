@@ -22,10 +22,6 @@ var AgentSchema = new Schema({
 	}, 
 	phoneNumber: {
 		type: String
-	},
-	customers: {
-		//IDs of customers
-		type: Array
 	}
 });
 
