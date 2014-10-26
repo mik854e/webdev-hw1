@@ -9,12 +9,14 @@
 	<form name="signin" method="post">
 		<fieldset>
 			<div class="form-group">
-				<label for="email">Email</label>
-				<input type="text" id="email" name="email" required>
+				<label for="email">Email:</label>
+				<input type="text" class="form-control" id="email" name="email" required>
 			</div>
 			<div class="form-group">
-				<button type="submit" formaction="/agents/home">Sign In Agent</button>
-				<button type="submit" formaction="/customers/home">Sign In Customer</button>
+				<div class="btn-group">
+					<button type="submit" formaction="/agents/home" class="btn btn-default">Sign in as Agent</button>
+					<button type="submit" formaction="/customers/home" class="btn btn-default">Sign in as Customer</button>
+				</div>
 			</div>
 		</fieldset>
 	</form>
@@ -23,23 +25,23 @@
 	<form name="signup" action="/agents/create" method="post">
 		<fieldset>
 			<div class="form-group">
-				<label for="firstName">First Name</label>
-				<input type="text" id="firstName" name="firstName" required>
+				<label for="firstName">First Name: </label>
+				<input type="text" class="form-control" id="firstName" name="firstName" required>
 			</div>
 			<div class="form-group">
-				<label for="lasttName">Last Name</label>
-				<input type="text" id="lastName" name="lastName" required>
+				<label for="lasttName">Last Name: </label>
+				<input type="text" class="form-control" id="lastName" name="lastName" required>
 			</div>
 			<div class="form-group">
-				<label for="email">Email</label>
-				<input type="text" id="email" name="email" required>
+				<label for="email">Email: </label>
+				<input type="text" class="form-control" id="email" name="email" required>
 			</div>
 			<div class="form-group">
-				<label for="phoneNumber">Phone</label>
-				<input type="text" id="phoneNumber" name="phoneNumber" required>
+				<label for="phoneNumber">Phone: </label>
+				<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
 			</div>
 			<div class="form-group">
-				<button type="submit">Sign Up</button>
+				<button type="submit" class="btn btn-default">Sign Up</button>
 			</div>
 		</fieldset>
 	</form>

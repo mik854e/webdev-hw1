@@ -11,44 +11,44 @@
 </div>
 
 <div>
-  <h3>New Contact</h3>
+  <h3>Add New Contact Interaction:</h3>
     <form name="contactForm" action="/agents/{{agentID}}/customers/{{customer._id.toString()}}/contacts/add" method="post">
       <fieldset>
         <div class="form-group">
           <div class="form-group">
-            <label for="contactType">Communication Type</label>
-            <input type="text" id="contactType" name="contactType" required>
+            <label for="contactType">Communication Type: </label>
+            <input type="text" class="form-control" id="contactType" name="contactType" required>
           </div>
 
           <div class="form-group">
-            <label for="summary">Summary</label>
-            <textarea name="summary" id="summary" rows="4" cols="50" required></textarea>
+            <label for="summary">Summary: </label>
+            <textarea name="summary" class="form-control" id="summary" rows="4" cols="50" required></textarea>
           </div>            
         </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-large btn-primary">Save</button>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">Save</button>
         </div>
       </fieldset>
     </form>
 </div>
 
-<h3>Contact History</h3>
-  <table style='width=50%' cellspacing="20">
-        <col width="130">
-        <col width="250">
-        <col width="500">
+</table>
+  <div class="panel panel-default">
+    <div class="panel-heading">Contact History</div>
+    <table class="table table-hover">
       <tr>
-        <th>Time</th>
-        <th>Communication Type</th> 
-        <th>Summary</th>
-      </tr>
-      {% for contact in contactHistory %}
-      <tr>
-        <td>{{contact.timestamp.toString()}}</td>
-        <td>{{contact.contactType}}</td> 
-        <td>{{contact.summary}}</td>
-      </tr>
-      {% endfor %}
-  </table>
+    <th>Time</th>
+    <th>Contact Type</th> 
+    <th>Summary</th>
+  </tr>
+  {% for contact in contactHistory %}
+    <tr>
+      <td>{{contact.timestamp.toString()}}</td>
+      <td>{{contact.contactType}}</td> 
+      <td>{{contact.summary}}</td>
+    </tr>
+  {% endfor %}
+    </table>
+  </div>
 
 {% endblock %}

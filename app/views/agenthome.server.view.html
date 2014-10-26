@@ -4,53 +4,53 @@
 
 <div>
 	<h2><a href='/agents/{{agent._id.toString()}}'>{{agent.firstName}} {{agent.lastName}}</a></h2>
-	<h3>Your Customers</h3>
-	<table style='width=50%'>
-    <col width="200">
-    <col width="200">
-    <col width="200">
-  		<tr>
-    		<th>Name</th>
-    		<th>Email</th> 
-    		<th>Phone Number</th>
-  		</tr>
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">My Customers</div>
+    <table class="table table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Email</th> 
+        <th>Phone Number</th>
+      </tr>
 
       {% for customer in customers %}
-    		<tr>
-      		<td><a href='/agents/{{agent._id.toString()}}/customers/{{customer._id.toString()}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
-      		<td>{{customer.email}}</td> 
-      		<td>{{customer.phoneNumber}}</td>
-    		</tr>
+      <tr>
+        <td><a href='/agents/{{agent._id.toString()}}/customers/{{customer._id.toString()}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
+        <td>{{customer.email}}</td> 
+        <td>{{customer.phoneNumber}}</td>
+      </tr>
       {% endfor %}
-	</table>
-</div>
+    </table>
+  </div>
 
 
 <div>
-    <form name="newCustomerForm" action="/agents/{{agent._id.toString()}}/customers/add" method="post">
-      <fieldset>
-        <h3>Add a New Customer</h3>
-        <div class="form-group">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" required>
-        </div>
-        <div class="form-group">
-          <label for="firstName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-          <label for="phoneNumber">Phone</label>
-          <input type="text" id="phoneNumber" name="phoneNumber" required>
-        </div>
-        <div class="text-center form-group">
-          <button type="submit">Add Customer</button>
-        </div>
-      </fieldset>
-    </form>
+  <form name="newCustomerForm" action="/agents/{{agent._id.toString()}}/customers/add" method="post">
+    <fieldset>
+      <h3>Add a New Customer: </h3>
+      <div class="form-group">
+        <label for="firstName">First Name: </label>
+        <input class="form-control" type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="form-group">
+        <label for="firstName">Last Name: </label>
+        <input class="form-control" type="text" id="lastName" name="lastName" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email: </label>
+        <input class="form-control" type="text" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone: </label>
+        <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" required>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-default" type="submit">Add Customer</button>
+      </div>
+    </fieldset>
+  </form>
 </div>
 
 
