@@ -39,7 +39,7 @@ exports.updateAgent = function(agentID, newInfo, callback) {
 				function(err, agent){
 					callback(agent);
 				}
-				);
+			);
 };
 
 

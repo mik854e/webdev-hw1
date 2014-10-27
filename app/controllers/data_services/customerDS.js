@@ -32,12 +32,12 @@ exports.getCustomers = function(agentID, callback) {
 
 exports.updateCustomer = function(customerID, newInfo, callback) {
 	Customer.update( 
-		{ _id: customerID }, 
-		{ $set: newInfo },
-		function(err, customer){
-			callback(customer);
-			}
-		);
+					{ _id: customerID }, 
+					{ $set: newInfo },
+					function(err, customer){
+						callback(customer);
+					}
+				);
 };
 
 exports.deleteCustomer = function(customerID) {
