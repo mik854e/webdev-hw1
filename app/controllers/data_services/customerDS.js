@@ -30,11 +30,26 @@ exports.getCustomers = function(agentID, callback) {
 	});
 };
 
-exports.updateCustomer = function(customerID, newInfo) {
-	var customer = Customer.update(
-		{ _id: customerID }, 
-		{ $set: newInfo }
-		);
+exports.updateCustomer = function(customerID, newInfo, callback) {
+	var new_firstName = newInfo.firstName;
+	var new_lastName = newInfo.lastName;
+	var new_phoneNumber =  newInfo.phoneNumber;
+	var new_email = newInfo.email;
+	Customer.update( 
+					{ _id: customerID }, 
+					{ $set: 
+						{
+						firstName: new_firstName,
+						lastName: new_lastName,
+						phoneNumber: new_phoneNumber,
+						email: new_email
+						}
+					},
+					{},
+					function(err, customer){
+						callback(customer);
+					}
+				);
 };
 
 exports.deleteCustomer = function(customerID) {

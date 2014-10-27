@@ -39,10 +39,13 @@ exports.getAgents = function(callback){
 
 exports.updateAgent = function(agent, newInfo, callback){
 	console.log('update agent in crm called');
+	agentDS.updateAgent(agent, newInfo, callback);
+	/*
 	agentDS.updateAgent(function (agent, newInfo) {
 		console.log(agent);
 		callback(agent, newInfo);
 	});
+*/
 };
 
 // Contact
@@ -107,10 +110,13 @@ exports.getCustomers = function(agentID, callback) {
 	});
 };
 
-exports.updateCustomer = function(customer, newInfo, callback){
+exports.updateCustomer = function(customerID, newInfo, callback){
 	console.log('update a customer in crm called');
-	customerDS.getCustomer(function(customer, newInfo) {
-		console.log(customer);
-		callback(customer, newInfo);
+	customerDS.updateCustomer(customerID, newInfo, callback);
+	/*
+	customerDS.updateCustomer(function(customerID, newInfo) {
+		console.log(customerID);
+		callback(customerID, newInfo);
 	});
+*/
 };

@@ -95,6 +95,19 @@ exports.getAgent = function(req, res) {
 	});
 };
 
+exports.getAgentUpdate = function(req, res) {
+	var agentID = req.params.agentID;
+
+	agent_facade.getAgent(agentID, function(agent) {
+		agent_facade.getCustomers(agentID, function(customers) {
+			res.render('agentUpdate', {
+				agent: agent,
+				customers: customers
+			});
+		});
+	});
+};
+
 exports.getAgents = function(req, res) {
 	agent_facade.getAgents(function(agents) {
 		res.render('allagents', {
@@ -137,6 +150,21 @@ exports.getCustomer = function(req, res) {
 	});
 };
 
+exports.getCustomerUpdate = function(req, res) {
+	var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
+
+	agent_facade.getCustomer(customerID, function(customer) {
+		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+			res.render('customerupdate', {
+				agentID: agentID,
+				customer: customer,
+				contactHistory : contactHistory
+			});
+		});
+	});
+};
+
 exports.createContact = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
@@ -163,3 +191,61 @@ exports.createContact = function(req, res) {
 		});
 	});
 };
+
+
+exports.updateCustomer = function(req, res){
+	var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
+
+	var firstName = req.body.firstName;
+	var lastName = req.body.lastName;
+	var email = req.body.email;
+	var phoneNumber = req.body.phoneNumber;
+
+	var customerInfo = {
+		firstName: firstName,
+	    lastName: lastName,
+	    phoneNumber: phoneNumber,
+	    email: email,
+	    agentID: agentID
+	};
+	
+	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
+		agent_facade.getAgent(agentID, function(agent) {
+			agent_facade.getCustomers(agentID, function(customers) {
+				console.log('Update');
+				res.render('agentHome', {
+					agent: agent,
+					customers: customers
+				});
+			});
+		});
+	});
+
+};
+
+exports.updateAgent = function(req, res){
+	var agentID = req.params.agentID;
+	var firstName = req.body.firstName;
+	var lastName = req.body.lastName;
+	var email = req.body.email;
+	var phoneNumber = req.body.phoneNumber;
+
+	var agentInfo = {
+		firstName: firstName,
+	    lastName: lastName,
+	    phoneNumber: phoneNumber,
+	    email: email
+	};
+
+	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
+		agent_facade.getAgent(agentID, function(agent) {
+		agent_facade.getCustomers(agentID, function(customers) {
+			res.render('agenthome', {
+				agent: agent,
+				customers: customers
+			});
+		});
+	});
+	});
+};	

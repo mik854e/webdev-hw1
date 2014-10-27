@@ -10,23 +10,23 @@
   </ul>
 
 
-</table>
-  <div class="panel panel-default">
-    <div class="panel-heading">Contact History</div>
-    <table class="table table-hover">
-      <tr>
-    <th>Time</th>
-    <th>Contact Type</th> 
-    <th>Summary</th>
-  </tr>
-  {% for contact in contactHistory %}
-    <tr>
-      <td>{{contact.timestamp.toString()}}</td>
-      <td>{{contact.contactType}}</td> 
-      <td>{{contact.summary}}</td>
+  </table>
+    <div class="panel panel-default">
+      <div class="panel-heading">Contact History</div>
+      <table class="table table-hover">
+        <tr>
+      <th>Time</th>
+      <th>Contact Type</th> 
+      <th>Summary</th>
     </tr>
-  {% endfor %}
-    </table>
-  </div>
+    {% for contact in contactHistory %}
+      <tr>
+        <td>{{contact.timestamp.toString()}}</td>
+        <td>{{contact.contactType}}</td> 
+        <td>{{contact.summary}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
 
 {% endblock %}
