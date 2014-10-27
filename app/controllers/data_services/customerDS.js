@@ -30,14 +30,14 @@ exports.getCustomers = function(agentID, callback) {
 	});
 };
 
-exports.updateCustomer = function(customerID, newInfo) {
-	var customer = Customer.update(
+exports.updateCustomer = function(customerID, newInfo, callback) {
+	Customer.update( 
 		{ _id: customerID }, 
-		{ $set: newInfo }
+		{ $set: newInfo },
+		function(err, customer){
+			callback(customer);
+			}
 		);
-	customer.save(function(err,customer){
-		callback(customer);
-	})
 };
 
 exports.deleteCustomer = function(customerID) {

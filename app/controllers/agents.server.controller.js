@@ -152,6 +152,7 @@ exports.createContact = function(req, res) {
 			});
 		});
 	});
+};
 
 
 exports.updateCustomer = function(req, res){
@@ -166,7 +167,7 @@ exports.updateCustomer = function(req, res){
 	var customerInfo = {
 		firstName: firstName,
 	    lastName: lastName,
-	    phoneNumber: phoneNumber,
+	    phoneNumber: pconeNumber,
 	    email: email,
 	    agentID: agentID
 	};
@@ -183,7 +184,7 @@ exports.updateCustomer = function(req, res){
 		});
 	});
 
-	};
+};
 
 exports.updateAgent = function(req, res){
 	var agentID = req.params.agentID;
@@ -207,5 +208,4 @@ exports.updateAgent = function(req, res){
 		});
 	});
 
-	};	
-};
+};	

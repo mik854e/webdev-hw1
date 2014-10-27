@@ -32,11 +32,14 @@ exports.getAgents = function(callback) {
 };
 
 
-exports.updateAgent = function(agentID, newInfo) {
-	var agent = Agent.update({ _id: agentID }, { $set: newInfo });
-	agent.save(function(err,agent){
-		callback(agent);
-	})
+exports.updateAgent = function(agentID, newInfo, callback) {
+	Agent.update(
+				{ _id: agentID }, 
+				{ $set: newInfo },
+				function(err, agent){
+					callback(agent);
+				}
+				);
 };
 
 
