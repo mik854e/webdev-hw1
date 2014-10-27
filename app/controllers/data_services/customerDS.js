@@ -18,8 +18,8 @@ exports.getCustomer = function(customerID, callback) {
 	});
 };
 
-exports.getCustomerByEmail = function(email, callback) {
-	Customer.findOne({ email: email }, function(err, customer) {
+exports.getCustomerByEmail = function(email, password, callback) {
+	Customer.findOne({ email: email, password: password }, function(err, customer) {
 		callback(customer);
 	});
 };

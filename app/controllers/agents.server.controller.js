@@ -9,6 +9,7 @@ exports.createCustomer = function(req, res) {
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
 	var email = req.body.email;
+	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
 
 	var customerInfo = {
@@ -16,6 +17,7 @@ exports.createCustomer = function(req, res) {
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email,
+	    password: password,
 	    agentID: agentID
 	};
 	
@@ -59,13 +61,15 @@ exports.createAgent = function(req, res) {
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
 	var email = req.body.email;
+	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
 
 	var agentInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
-	    email: email
+	    email: email,
+	    password: password
 	};
 
 	agent_facade.createAgent(agentInfo, function(agent) {
@@ -101,14 +105,20 @@ exports.getAgents = function(req, res) {
 
 exports.signinAgent = function(req, res) {
 	var email = req.body.email;
+	var password = req.body.password;
 
-	agent_facade.getAgentByEmail(email, function(agent) {
-		agent_facade.getCustomers(agent._id.toString(), function(customers) {
-			res.render('agenthome', {
-				agent: agent,
-				customers: customers
+	agent_facade.getAgentByEmail(email, password, function(agent) {
+		if (agent) {
+			agent_facade.getCustomers(agent._id.toString(), function(customers) {
+				res.render('agenthome', {
+					agent: agent,
+					customers: customers
+				});
 			});
-		});
+		}
+		else {
+			res.render('signin');
+		}
 	});
 };
 

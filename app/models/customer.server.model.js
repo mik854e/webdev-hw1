@@ -20,11 +20,15 @@ var CustomerSchema = new Schema({
 		trim: true,
 		default: ''
 	}, 
+	password: {
+		type: String,
+		trim: true,
+		default: ''
+	}, 
 	phoneNumber: {
 		type: String
 	},
 	agentID: {
-		//IDs of customer
 		type: String
 	}
 });

@@ -19,8 +19,8 @@ exports.getAgent = function(agentID, callback) {
 	});
 };
 
-exports.getAgentByEmail = function(email, callback) {
-	Agent.findOne({ email: email }, function(err, agent) {
+exports.getAgentByEmail = function(email, password, callback) {
+	Agent.findOne({ email: email, password: password }, function(err, agent) {
 		callback(agent);
 	});
 };

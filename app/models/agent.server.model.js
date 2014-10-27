@@ -19,7 +19,13 @@ var AgentSchema = new Schema({
 		type: String,
 		trim: true,
 		default: ''
+	}, 	
+	password: {
+		type: String,
+		trim: true,
+		default: ''
 	}, 
+
 	phoneNumber: {
 		type: String
 	}

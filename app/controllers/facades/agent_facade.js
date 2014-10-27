@@ -46,8 +46,8 @@ exports.getAgent = function(agentID, callback) {
 	crm_services.getAgent(agentID, callback);
 };
 
-exports.getAgentByEmail = function(email, callback) {
-	crm_services.getAgentByEmail(email, callback);
+exports.getAgentByEmail = function(email, password, callback) {
+	crm_services.getAgentByEmail(email, password, callback);
 };
 
 exports.getAgents = function(callback) {
