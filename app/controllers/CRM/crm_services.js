@@ -198,10 +198,10 @@ exports.getCustomers = function(agentID, callback) {
 	});
 };
 
-exports.updateCustomer = function(customer, newInfo, callback){
+exports.updateCustomer = function(customerID, newInfo, callback){
 	console.log('update a customer in crm called');
-	customerDS.getCustomer(function(customer, newInfo) {
-		console.log(customer);
-		callback(customer, newInfo);
+	customerDS.updateCustomer(function(customerID, newInfo) {
+		console.log(customerID);
+		callback(customerID, newInfo);
 	});
 };

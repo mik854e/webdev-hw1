@@ -35,6 +35,9 @@ exports.updateCustomer = function(customerID, newInfo) {
 		{ _id: customerID }, 
 		{ $set: newInfo }
 		);
+	customer.save(function(err,customer){
+		callback(customer);
+	})
 };
 
 exports.deleteCustomer = function(customerID) {

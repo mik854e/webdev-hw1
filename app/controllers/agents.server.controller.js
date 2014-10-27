@@ -171,10 +171,11 @@ exports.updateCustomer = function(req, res){
 	    agentID: agentID
 	};
 	
-	agent_facade.updateCustomer(customerInfo, function(customer) {
+	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, function(customers) {
-				res.render('customerupdate', {
+				console.log('Update');
+				res.render('agenthome', {
 					agent: agent,
 					customers: customers
 				});
@@ -198,12 +199,13 @@ exports.updateAgent = function(req, res){
 	    email: email
 	};
 
-	agent_facade.updateAgent(agentInfo, function(agent) {
+	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		console.log('Update');
 		console.log(agent);
-		res.render('agentupdate', {
+		res.render('agenthome', {
 			agent: agent
 		});
 	});
+
 	};	
 };
