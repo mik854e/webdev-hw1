@@ -34,6 +34,7 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 	Customer.update( 
 					{ _id: customerID }, 
 					{ $set: newInfo },
+					{upsert:true, w: 1},
 					function(err, customer){
 						callback(customer);
 					}

@@ -36,6 +36,7 @@ exports.updateAgent = function(agentID, newInfo, callback) {
 	Agent.update(
 				{ _id: agentID }, 
 				{ $set: newInfo },
+				{upsert:true, w: 1},
 				function(err, agent){
 					callback(agent);
 				}
