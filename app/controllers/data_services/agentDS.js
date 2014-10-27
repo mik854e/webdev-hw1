@@ -33,10 +33,21 @@ exports.getAgents = function(callback) {
 
 
 exports.updateAgent = function(agentID, newInfo, callback) {
+	var new_firstName = newInfo.firstName;
+	var new_lastName = newInfo.lastName;
+	var new_phoneNumber =  newInfo.phoneNumber;
+	var new_email = newInfo.email;
 	Agent.update(
 				{ _id: agentID }, 
-				{ $set: newInfo },
-				{upsert:true, w: 1},
+				{ $set: 
+					{
+					firstName: new_firstName,
+					lastName: new_lastName,
+					phoneNumber: new_phoneNumber,
+					email: new_email
+					}
+				},
+				{},
 				function(err, agent){
 					callback(agent);
 				}

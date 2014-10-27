@@ -13,7 +13,7 @@ module.exports = function(app) {
 	app.route('/agents/:agentID/customers/:customerID/update').get(agent.getCustomerUpdate);
 	app.route('/agents/:agentID/customers/:customerID').post(agent.updateCustomer);
 	app.route('/agents/:agentID/update').get(agent.getAgentUpdate);
-	app.route('/agents/:agentID/update').post(agent.updateAgent);
+	app.route('/agents/:agentID').post(agent.updateAgent);
 
 	// app.route('/agents/:id').delete(agent.deleteAgent);
 	

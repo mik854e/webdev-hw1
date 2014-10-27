@@ -201,11 +201,13 @@ exports.updateCustomer = function(req, res){
 	};
 	
 	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
-		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
-			res.render('customer', {
-				agentID: agentID,
-				customer: customer,
-				contactHistory : contactHistory
+		agent_facade.getAgent(agentID, function(agent) {
+			agent_facade.getCustomers(agentID, function(customers) {
+				console.log('Update');
+				res.render('agentHome', {
+					agent: agent,
+					customers: customers
+				});
 			});
 		});
 	});
@@ -227,11 +229,13 @@ exports.updateAgent = function(req, res){
 	};
 
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
-		console.log('Update');
-		console.log(agent);
-		res.render('agentHome', {
-			agent: agent
+		agent_facade.getAgent(agentID, function(agent) {
+		agent_facade.getCustomers(agentID, function(customers) {
+			res.render('agenthome', {
+				agent: agent,
+				customers: customers
+			});
 		});
 	});
-
+	});
 };	
