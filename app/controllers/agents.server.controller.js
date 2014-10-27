@@ -91,6 +91,19 @@ exports.getAgent = function(req, res) {
 	});
 };
 
+exports.getAgentUpdate = function(req, res) {
+	var agentID = req.params.agentID;
+
+	agent_facade.getAgent(agentID, function(agent) {
+		agent_facade.getCustomers(agentID, function(customers) {
+			res.render('agentUpdate', {
+				agent: agent,
+				customers: customers
+			});
+		});
+	});
+};
+
 exports.getAgents = function(req, res) {
 	agent_facade.getAgents(function(agents) {
 		res.render('allagents', {
@@ -119,6 +132,21 @@ exports.getCustomer = function(req, res) {
 	agent_facade.getCustomer(customerID, function(customer) {
 		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
 			res.render('customer', {
+				agentID: agentID,
+				customer: customer,
+				contactHistory : contactHistory
+			});
+		});
+	});
+};
+
+exports.getCustomerUpdate = function(req, res) {
+	var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
+
+	agent_facade.getCustomer(customerID, function(customer) {
+		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+			res.render('customerupdate', {
 				agentID: agentID,
 				customer: customer,
 				contactHistory : contactHistory
@@ -167,19 +195,17 @@ exports.updateCustomer = function(req, res){
 	var customerInfo = {
 		firstName: firstName,
 	    lastName: lastName,
-	    phoneNumber: pconeNumber,
+	    phoneNumber: phoneNumber,
 	    email: email,
 	    agentID: agentID
 	};
 	
 	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
-		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
-				console.log('Update');
-				res.render('customerupdate', {
-					agent: agent,
-					customers: customers
-				});
+		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+			res.render('customer', {
+				agentID: agentID,
+				customer: customer,
+				contactHistory : contactHistory
 			});
 		});
 	});
@@ -203,7 +229,7 @@ exports.updateAgent = function(req, res){
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		console.log('Update');
 		console.log(agent);
-		res.render('agentupdate', {
+		res.render('agentHome', {
 			agent: agent
 		});
 	});

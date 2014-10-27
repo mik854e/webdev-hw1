@@ -3,7 +3,7 @@
 {% block content %}
 <div>
 	<h2>{{customer.firstName}} {{customer.lastName}}</a></h2>
-  <form name="customerUpdate" action="/customer/update" method="post">
+  <form name="customerUpdate" action="/agents/{{agentID}}/customers/{{customer._id.toString()}}" method="post">
     <fieldset>
       <div class="form-group">
         <label for="firstName">First Name</label>

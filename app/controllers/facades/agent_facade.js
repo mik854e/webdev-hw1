@@ -61,7 +61,7 @@ exports.updateAgent = function(agentID, agentInfo, callback){
 };
 
 exports.updateCustomer = function(customerID, newInfo, callback){
-	crm_services.updateContact(customerID, newInfo, callback);
+	crm_services.updateCustomer(customerID, newInfo, callback);
 };
 
 

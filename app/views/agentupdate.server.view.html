@@ -4,7 +4,7 @@
 
 <div>
 	<h2><a href='/agents/{{agent._id.toString()}}'>{{agent.firstName}} {{agent.lastName}}</a></h2>
-  <form name="agentUpdate" action="/agents/update" method="post">
+  <form name="agentUpdate" action="/agents/{{agent._id.toString()}}/update" method="post">
     <fieldset>
       <div class="form-group">
         <label for="firstName">First Name</label>
