@@ -21,7 +21,8 @@
       		<td><a href='/agents/{{agent._id.toString()}}/customers/{{customer._id.toString()}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
       		<td>{{customer.email}}</td> 
       		<td>{{customer.phoneNumber}}</td>
-          <td><button type=button href='/agents/{{agent._id.toString()}}/customers/{{customer._id.toString()}}/contacts/update'>Update</button></td>
+          <td><a  type="submit" class="button" href='/agents/{{agent._id.toString()}}/customers/{{customer._id.toString()}}/contacts/update'>Update</a>
+          </td>
     		</tr>
       {% endfor %}
 	</table>
@@ -50,7 +51,8 @@
         </div>
         <div class="text-center form-group">
           <button type="submit">Add Customer</button>
-           <button type="button" href='/agents/{{agent._id.toString()}}/update'>Update Agent Info</button>
+
+          <a  class="button" href='/agents/{{agent._id.toString()}}/update'>Update Agent Info</a>
         </div>
       </fieldset>
     </form>

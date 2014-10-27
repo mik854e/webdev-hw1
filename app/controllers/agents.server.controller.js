@@ -176,7 +176,7 @@ exports.updateCustomer = function(req, res){
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, function(customers) {
 				console.log('Update');
-				res.render('agenthome', {
+				res.render('customerupdate', {
 					agent: agent,
 					customers: customers
 				});
@@ -203,7 +203,7 @@ exports.updateAgent = function(req, res){
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		console.log('Update');
 		console.log(agent);
-		res.render('agenthome', {
+		res.render('agentupdate', {
 			agent: agent
 		});
 	});
