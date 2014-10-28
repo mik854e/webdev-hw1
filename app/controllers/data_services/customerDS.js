@@ -52,6 +52,8 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 				);
 };
 
-exports.deleteCustomer = function(customerID) {
-	Customer.delete({ _id: customerID });
+exports.deleteCustomer = function(customerID, callback) {
+	Customer.remove({ _id: customerID }, function(err) {
+		callback();
+	});
 };

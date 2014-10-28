@@ -14,11 +14,10 @@ exports.createAgent = function(agentInfo, callback) {
 	agentDS.createAgent(agentInfo, callback);
 };
 
-exports.deleteAgent = function(callback){
+exports.deleteAgent = function(agentID, callback) {
 	console.log('delete agent in crm called');
-	agentDS.deleteAgent(function(agent){
-		console.log(agent);
-		callback(agent);
+	agentDS.deleteAgent(agentID, function(err){
+		callback();
 	});
 };
 
@@ -82,16 +81,22 @@ exports.updateContact = function(contact, newInfo, callback){
 };
 
 
+exports.deleteContact = function(contactID, callback) {
+	contactDS.deleteContact(contactID, function() {
+		callback();
+	});
+};
+
+
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
 	customerDS.createCustomer(customerInfo, callback);
 };
 
-exports.deleteCustomer = function(callback){
+exports.deleteCustomer = function(customerID, callback){
 	console.log('create customer in crm called');
-	customerDS.deleteCustomer(function (customer) {
-		console.log(customer);
-		callback(customer);
+	customerDS.deleteCustomer(customerID, function() {
+		callback();
 	});
 };
 
