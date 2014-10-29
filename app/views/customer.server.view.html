@@ -6,10 +6,12 @@
 	<h2>
       {{customer.firstName}} {{customer.lastName}}  
   </h2>
-  <a type="submit" class="button" href='/agents/{{agentID}}/customers/{{customer._id.toString()}}/update'>Update</a>
-  <form method="post" action="/agents/{{agentID}}/customers/{{customer._id.toString()}}/delete">
-    <input type="submit" value="Delete customer">
-  </form>
+
+  <p>
+    <a type="submit" class="button" href='/agents/{{agentID}}/customers/{{customer._id.toString()}}/update'>Update Contact Info</a>
+    | <a class="button" href='/agents/{{agentID}}/customers/{{customer._id.toString()}}/delete'>Delete</a>
+  </p>
+
   <ul>
       <li><b>Email: </b>{{customer.email}}</li>
       <li><b>Phone Number: </b>{{customer.phoneNumber}}</li>
@@ -54,7 +56,7 @@
         <td>{{contact.summary}}</td>
         <td>
           <form method="post" action="/agents/{{agentID}}/customers/{{customer._id.toString()}}/contacts/{{contact._id.toString()}}/delete">
-            <input type="submit" value="Delete contact">
+            <input type="submit" value="Delete">
           </form>
         </td>
       </tr>

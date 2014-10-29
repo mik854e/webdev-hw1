@@ -34,12 +34,21 @@ exports.createCustomer = function(req, res) {
 };
 
 exports.deleteCustomer = function(req, res) {
-	// var agentID = req.params.agentID;
+	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
 	agent_facade.deleteCustomer(customerID, function() {
-		res.render('success', {
-			msg: 'Customer deleted successfully!'
+		//res.render('success', {
+		//	msg: 'Customer deleted successfully!'
+		//});
+		//res.render()
+		agent_facade.getAgent(agentID, function(agent) {
+			agent_facade.getCustomers(agentID, function(customers) {
+				res.render('agenthome', {
+					agent: agent,
+					customers: customers
+				});
+			});
 		});
 	});
 };
@@ -225,7 +234,6 @@ exports.updateCustomer = function(req, res){
 
 };
 
-
 exports.deleteContact = function(req, res) {
 	var contactID = req.params.contactID;
 	agent_facade.deleteContact(contactID, function() {
@@ -234,8 +242,6 @@ exports.deleteContact = function(req, res) {
 		});
 	});
 };
-
-
 
 exports.updateAgent = function(req, res){
 	var agentID = req.params.agentID;
@@ -263,13 +269,16 @@ exports.updateAgent = function(req, res){
 	});
 };	
 
-
 exports.deleteAgent = function(req, res) {
 	var agentID = req.params.agentID;
 	agent_facade.deleteAgent(agentID, function() {
-			res.render('success', {
-				msg: 'deleted agent'
+		agent_facade.getAgents(function(agents) {
+			res.render('allagents', {
+				agents: agents
 			});
+		});
+			//res.render('success', {
+			//	msg: 'deleted agent'
+			//});
 	});
 };
-
