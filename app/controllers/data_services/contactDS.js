@@ -25,6 +25,8 @@ exports.updateContact = function(contactID, newInfo) {
 };
 
 
-exports.deleteContact = function(contactID) {
-	Contact.delete({ _id: contactID });
+exports.deleteContact = function(contactID, callback) {
+	Contact.remove({ _id: contactID }, function(err) {
+		callback();
+	});
 };

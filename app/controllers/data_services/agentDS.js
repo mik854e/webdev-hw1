@@ -55,6 +55,8 @@ exports.updateAgent = function(agentID, newInfo, callback) {
 };
 
 
-exports.deleteAgent = function(agentID) {
-	Agent.delete({ _id: agentID });
+exports.deleteAgent = function(agentID, callback) {
+	Agent.remove({ _id: agentID }, function(err) {
+		callback(err);
+	});
 };

@@ -8,8 +8,8 @@ exports.createCustomer = function(customerInfo, callback) {
 	crm_services.createCustomer(customerInfo, callback);
 };
 
-exports.deleteCustomer = function(agentID, customerID, callback) {
-	crm_services.deleteCustomer(agentID, customerID, function() {
+exports.deleteCustomer = function(customerID, callback) {
+	crm_services.deleteCustomer(customerID, function() {
 		callback();
 	});
 };
@@ -31,6 +31,14 @@ exports.getContactHistory = function(agentID, customerID, callback) {
 exports.createContact = function(contactInfo, callback) {
 	crm_services.createContact(contactInfo, callback);
 };
+
+
+exports.deleteContact = function(contactID, callback) {
+	crm_services.deleteContact(contactID, function() {
+		callback();
+	});
+};
+
 
 exports.createAgent = function(agentInfo, callback) {
 	crm_services.createAgent(agentInfo, callback);

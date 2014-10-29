@@ -8,6 +8,11 @@
   </h2>
 
   <p><a class="button" href='/agents/{{agent._id.toString()}}/update'>Update Agent Info</a></p>
+
+  <form method="post" action="/agents/{{agent._id.toString()}}/delete">
+    <input class="button" type="submit" value="Delete Agent">
+  </form>
+
   <div class="panel panel-default">
     <div class="panel-heading">My Customers</div>
     <table class="table table-hover">

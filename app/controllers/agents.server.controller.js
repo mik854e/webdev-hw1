@@ -34,10 +34,10 @@ exports.createCustomer = function(req, res) {
 };
 
 exports.deleteCustomer = function(req, res) {
-	var agentID = req.params.agentID;
-	var customerID = req.body.customerID;
+	// var agentID = req.params.agentID;
+	var customerID = req.params.customerID;
 
-	agent_facade.deleteCustomer(agentID, customerID, function() {
+	agent_facade.deleteCustomer(customerID, function() {
 		res.render('success', {
 			msg: 'Customer deleted successfully!'
 		});
@@ -72,6 +72,7 @@ exports.createAgent = function(req, res) {
 	    password: password
 	};
 
+	console.log("creating agent");
 	agent_facade.createAgent(agentInfo, function(agent) {
 		console.log('CREATE');
 		console.log(agent);
@@ -224,6 +225,18 @@ exports.updateCustomer = function(req, res){
 
 };
 
+
+exports.deleteContact = function(req, res) {
+	var contactID = req.params.contactID;
+	agent_facade.deleteContact(contactID, function() {
+		res.render('success', {
+			msg: 'deleted contact!'
+		});
+	});
+};
+
+
+
 exports.updateAgent = function(req, res){
 	var agentID = req.params.agentID;
 	var firstName = req.body.firstName;
@@ -249,3 +262,14 @@ exports.updateAgent = function(req, res){
 	});
 	});
 };	
+
+
+exports.deleteAgent = function(req, res) {
+	var agentID = req.params.agentID;
+	agent_facade.deleteAgent(agentID, function() {
+			res.render('success', {
+				msg: 'deleted agent'
+			});
+	});
+};
+
