@@ -4,7 +4,6 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	Agent = mongoose.model('Agent');
 
-
 exports.createAgent = function(agentInfo, callback) {
 	var agent = new Agent(agentInfo);
 	agent.save(function (err, agent) {
@@ -31,6 +30,12 @@ exports.getAgents = function(callback) {
 	});
 };
 
+exports.getAgentsPaginated = function(limit, skip, callback) {
+	Agent.find({}).limit(limit).skip(skip).exec(function(err, agents) {
+		console.log(agents);
+		callback(agents);
+	});
+};
 
 exports.updateAgent = function(agentID, newInfo, callback) {
 	var new_firstName = newInfo.firstName;

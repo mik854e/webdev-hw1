@@ -8,6 +8,7 @@ var _ = require('lodash'),
 	Contact = mongoose.model('Contact'),
 	Customer = mongoose.model('Customer'),
 	Agent = mongoose.model('Agent');
+var limit = 2;
 
 // Agent
 exports.createAgent = function(agentInfo, callback) {
@@ -35,6 +36,15 @@ exports.getAgents = function(callback){
 		callback(agents);
 	});
 };
+
+exports.getAgentsPaginated = function(pageNum, callback){
+	var skip = (pageNum-1)*limit;
+	agentDS.getAgentsPaginated(limit, skip, function(agents) {
+		console.log(agents);
+		callback(agents);
+	});
+};
+
 
 exports.updateAgent = function(agent, newInfo, callback){
 	console.log('update agent in crm called');

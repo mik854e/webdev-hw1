@@ -64,6 +64,12 @@ exports.getAgents = function(callback) {
 	});
 };
 
+exports.getAgentsPaginated = function(pageNum, callback) {
+	crm_services.getAgentsPaginated(pageNum, function(agents) {
+		callback(agents);
+	});
+};
+
 exports.updateAgent = function(agentID, agentInfo, callback){
 	crm_services.updateAgent(agentID, agentInfo, callback);
 };

@@ -119,7 +119,19 @@ exports.getAgentUpdate = function(req, res) {
 };
 
 exports.getAgents = function(req, res) {
+	var pageNum = req.query.pagenum;
+
+
 	agent_facade.getAgents(function(agents) {
+		res.render('allagents', {
+			agents: agents
+		});
+	});
+};
+
+exports.getAgentsPaginated = function(req, res) {
+	var pageNum = req.query.pagenum;
+	agent_facade.getAgentsPaginated(pageNum, function(agents) {
 		res.render('allagents', {
 			agents: agents
 		});

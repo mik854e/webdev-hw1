@@ -4,6 +4,7 @@ module.exports = function(app) {
 	var agent = require('../../app/controllers/agents');
 
 	app.route('/agents').get(agent.getAgents);
+	app.route('/agentspaginated').get(agent.getAgentsPaginated);
 	app.route('/agents/:agentID').get(agent.getAgent);
 	app.route('/agents/create').post(agent.createAgent);
 	app.route('/agents/home').post(agent.signinAgent);
