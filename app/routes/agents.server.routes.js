@@ -28,4 +28,6 @@ module.exports = function(app) {
 	app.route('/createCustomer').post(agent.createCustomer);
 	app.route('/updateCustomer').post(agent.updateCustomer);
 	app.route('/deleteCustomer').post(agent.deleteCustomer);
+
+	app.route('/updateAgentAsync/:agentID').post(agent.updateAgentAsync);
 };
