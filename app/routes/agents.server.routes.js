@@ -25,4 +25,7 @@ module.exports = function(app) {
 	app.route('/createAgent').post(agent.createAgent);
 	app.route('/updateAgent').post(agent.updateAgent);
 	app.route('/deleteAgent').post(agent.deleteAgent);
+	app.route('/createCustomer').post(agent.createCustomer);
+	app.route('/updateCustomer').post(agent.updateCustomer);
+	app.route('/deleteCustomer').post(agent.deleteCustomer);
 };
