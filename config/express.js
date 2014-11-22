@@ -18,7 +18,8 @@ var express = require('express'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path');
+	path = require('path'),
+	rejectDuplicates = require('./reject-duplicates');
 
 module.exports = function(db) {
 	// Initialize express app
@@ -113,6 +114,9 @@ module.exports = function(db) {
 	// Setting the app router and static folder
 	app.use(express.static(path.resolve('./public')));
 
+	//app.use(rejectDuplicates);
+	//app.UUIDs = {}
+
 	// Globbing routing files
 	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
 		require(path.resolve(routePath))(app);
@@ -139,6 +143,7 @@ module.exports = function(db) {
 			error: 'Not Found'
 		});
 	});
+
 
 	return app;
 };

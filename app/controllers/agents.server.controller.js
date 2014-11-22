@@ -4,6 +4,8 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	agent_facade = require('./facades/agent_facade.js');
 
+var HOST = "http://localhost:3000";
+
 exports.createCustomer = function(req, res) {
 	var agentID = req.params.agentID;
 	var firstName = req.body.firstName;
@@ -271,13 +273,13 @@ exports.updateAgent = function(req, res){
 
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, function(customers) {
-			res.render('agenthome', {
-				agent: agent,
-				customers: customers
+			agent_facade.getCustomers(agentID, function(customers) {
+				res.render('agenthome', {
+					agent: agent,
+					customers: customers
+				});
 			});
 		});
-	});
 	});
 };	
 
@@ -292,5 +294,29 @@ exports.deleteAgent = function(req, res) {
 			//res.render('success', {
 			//	msg: 'deleted agent'
 			//});
+	});
+};
+
+exports.updateAgentAsync = function(req, res) {
+	var agentID = req.params.agentID;
+	var firstName = req.body.firstName;
+	var lastName = req.body.lastName;
+	var email = req.body.email;
+	var phoneNumber = req.body.phoneNumber;
+
+	var agentInfo = {
+		firstName: firstName,
+		lastName: lastName,
+		phoneNumber: phoneNumber,
+		email: email
+	};
+
+	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
+	});
+
+	var poll_url = HOST + '/agents/' + agentID;
+
+	res.status(202).render('asyncupdated', {
+		poll_url: poll_url
 	});
 };
