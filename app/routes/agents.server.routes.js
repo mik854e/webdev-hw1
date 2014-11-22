@@ -22,4 +22,7 @@ module.exports = function(app) {
 	app.route('/agents/:agentID/customers').get(agent.deleteCustomer);
 	// app.route('/agents/:id/customers').get(agent.getCustomers);
 	
+	app.route('/createAgent').post(agent.createAgent);
+	app.route('/updateAgent').post(agent.updateAgent);
+	app.route('/deleteAgent').post(agent.deleteAgent);
 };
