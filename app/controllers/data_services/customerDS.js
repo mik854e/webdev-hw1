@@ -26,7 +26,6 @@ exports.getCustomerByEmail = function(email, password, callback) {
 
 exports.getCustomers = function(agentID, callback) {
 	Customer.find({ agentID: agentID }, function(err, customers) {
-		console.log(customers);
 		callback(customers);
 	});
 };
