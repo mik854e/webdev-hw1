@@ -14,6 +14,7 @@ exports.createCustomer = function(customerInfo, callback) {
 
 exports.getCustomer = function(customerID, callback) {
 	Customer.findOne({ _id: customerID }, function(err, customer) {
+		console.log('getCusteomr: ' + customer);
 		callback(customer);
 	});
 };

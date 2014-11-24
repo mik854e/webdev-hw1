@@ -17,6 +17,7 @@ exports.createCustomer = function(req, res) {
 	var city = req.body.city;
 	var zip = req.body.zip;
 	var state = req.body.state;
+	var update_timestamp = new Date();
 
 	var customerInfo = {
 		firstName: firstName,
@@ -28,7 +29,8 @@ exports.createCustomer = function(req, res) {
 	   	street: street,
 	    city: city,
 	    zip: zip,
-	    state: state
+	    state: state,
+	    update_timestamp: update_timestamp
 	};
 	
 	agent_facade.createCustomer(customerInfo, function(customer) {
@@ -216,7 +218,7 @@ exports.createContact = function(req, res) {
 	var city = req.body.city;
 	var zip = req.body.zip;
 	var state = req.body.state;
-
+	var date = new Date();
 	var contactInfo = {
 		agentID: agentID,
 		customerID: customerID,
@@ -255,6 +257,7 @@ exports.updateCustomer = function(req, res){
 	var city = req.body.city;
 	var zip = req.body.zip;
 	var state = req.body.state;
+	var update_timestamp = new Date();
 
 	var customerInfo = {
 		firstName: firstName,
@@ -265,10 +268,11 @@ exports.updateCustomer = function(req, res){
 	    street: street,
 	    city: city,
 	    zip: zip,
-	    state: state
+	    state: state,
+	    update_timestamp: update_timestamp
 	};
 	
-	agent_facade.updateCustomer(agentID, customerID, customerInfo, function(customer) {
+	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, function(customers) {
 				console.log('Update');

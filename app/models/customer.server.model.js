@@ -47,6 +47,10 @@ var CustomerSchema = new Schema({
 
 	state: {
 		type: String
+	},
+
+	update_timestamp: {
+		type: Date
 	}
 });
 
