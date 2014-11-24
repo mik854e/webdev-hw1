@@ -28,7 +28,24 @@ var CustomerSchema = new Schema({
 	phoneNumber: {
 		type: String
 	},
+
 	agentID: {
+		type: String
+	},
+
+	street: {
+		type: String
+	},
+
+	city: {
+		type: String
+	},
+
+	zip: {
+		type: Number
+	},
+
+	state: {
 		type: String
 	}
 });

@@ -4,7 +4,7 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	agent_facade = require('./facades/agent_facade.js');
 
-var HOST = "http://localhost:3000";
+var HOST = 'http://localhost:3000';
 
 exports.createCustomer = function(req, res) {
 	var agentID = req.params.agentID;
@@ -13,6 +13,10 @@ exports.createCustomer = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var customerInfo = {
 		firstName: firstName,
@@ -20,7 +24,11 @@ exports.createCustomer = function(req, res) {
 	    phoneNumber: phoneNumber,
 	    email: email,
 	    password: password,
-	    agentID: agentID
+	    agentID: agentID,
+	   	street: street,
+	    city: city,
+	    zip: zip,
+	    state: state
 	};
 	
 	agent_facade.createCustomer(customerInfo, function(customer) {
@@ -74,16 +82,26 @@ exports.createAgent = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
+	var customer_count = 0;
 
 	var agentInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email,
-	    password: password
+	    password: password,
+	    street: street,
+	    city: city,
+	    zip: zip,
+	    state: state,
+	    customer_count: customer_count
 	};
 
-	console.log("creating agent");
+	console.log('creating agent');
 	agent_facade.createAgent(agentInfo, function(agent) {
 		console.log('CREATE');
 		console.log(agent);
@@ -194,13 +212,21 @@ exports.createContact = function(req, res) {
 	var customerID = req.params.customerID;
 	var contactType = req.body.contactType;
 	var summary = req.body.summary;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var contactInfo = {
 		agentID: agentID,
 		customerID: customerID,
 		contactType: contactType,
 		summary: summary,
-		timestamp: new Date()
+		timestamp: new Date(),
+		street: street,
+		city: city,
+		zip: zip,
+		state: state
 	};
 
 	agent_facade.createContact(contactInfo, function() {
@@ -225,16 +251,24 @@ exports.updateCustomer = function(req, res){
 	var lastName = req.body.lastName;
 	var email = req.body.email;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var customerInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email,
-	    agentID: agentID
+	    agentID: agentID,
+	    street: street,
+	    city: city,
+	    zip: zip,
+	    state: state
 	};
 	
-	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
+	agent_facade.updateCustomer(agentID, customerID, customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, function(customers) {
 				console.log('Update');
@@ -263,12 +297,20 @@ exports.updateAgent = function(req, res){
 	var lastName = req.body.lastName;
 	var email = req.body.email;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var agentInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
-	    email: email
+	    email: email,
+	   	street: street,
+	    city: city,
+	    zip: zip,
+	    state: state
 	};
 
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {

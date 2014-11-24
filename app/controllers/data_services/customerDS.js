@@ -26,6 +26,7 @@ exports.getCustomerByEmail = function(email, password, callback) {
 
 exports.getCustomers = function(agentID, callback) {
 	Customer.find({ agentID: agentID }, function(err, customers) {
+		console.log(customers);
 		callback(customers);
 	});
 };
@@ -35,6 +36,10 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 	var new_lastName = newInfo.lastName;
 	var new_phoneNumber =  newInfo.phoneNumber;
 	var new_email = newInfo.email;
+	var new_street = newInfo.street;
+	var new_city = newInfo.city;
+	var new_zip = newInfo.zip;
+	var new_state = newInfo.state;
 	Customer.update( 
 					{ _id: customerID }, 
 					{ $set: 
@@ -42,7 +47,11 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 						firstName: new_firstName,
 						lastName: new_lastName,
 						phoneNumber: new_phoneNumber,
-						email: new_email
+						email: new_email,
+						street: new_street,
+						city: new_city,
+						zip: new_zip,
+						state: new_state
 						}
 					},
 					{},

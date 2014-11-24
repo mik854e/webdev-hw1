@@ -42,6 +42,10 @@ exports.updateAgent = function(agentID, newInfo, callback) {
 	var new_lastName = newInfo.lastName;
 	var new_phoneNumber =  newInfo.phoneNumber;
 	var new_email = newInfo.email;
+	var new_street = newInfo.street;
+	var new_city = newInfo.city;
+	var new_zip = newInfo.zip;
+	var new_state = newInfo.state;
 	Agent.update(
 				{ _id: agentID }, 
 				{ $set: 
@@ -49,7 +53,11 @@ exports.updateAgent = function(agentID, newInfo, callback) {
 					firstName: new_firstName,
 					lastName: new_lastName,
 					phoneNumber: new_phoneNumber,
-					email: new_email
+					email: new_email,
+					street: new_street,
+					city: new_city,
+					zip: new_zip,
+					state: new_state
 					}
 				},
 				{},
@@ -64,4 +72,31 @@ exports.deleteAgent = function(agentID, callback) {
 	Agent.remove({ _id: agentID }, function(err) {
 		callback(err);
 	});
+};
+
+exports.getAgentState = function(agentID, callback){
+	Agent.findOne({ _id: agentID }, function(err, agent){
+		callback(agent.state);
+	}); 
+};
+
+exports.getAgentCustomerCount = function(agentID, callback){
+	Agent.findOne({ _id: agentID }, function(err, agent){
+		callback(agent.customer_count);
+	}); 
+};
+
+exports.updateCustomerCount = function(agentID, count, callback){
+	Agent.update(
+				{ _id: agentID }, 
+				{ $set: 
+					{
+					customer_count: count
+					}
+				},
+				{},
+				function(err, agent){
+					callback(agent);
+				}
+			);
 };
