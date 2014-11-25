@@ -28,7 +28,28 @@ var AgentSchema = new Schema({
 
 	phoneNumber: {
 		type: String
+	},
+
+	street: {
+		type: String
+	},
+
+	city: {
+		type: String
+	},
+
+	zip: {
+		type: Number
+	},
+
+	state:{
+		type: String
+	},
+
+	customer_count: {
+		type: Number
 	}
+	  
 });
 
 AgentSchema.plugin(random);
