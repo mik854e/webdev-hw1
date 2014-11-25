@@ -8,7 +8,8 @@ var _ = require('lodash'),
 	Contact = mongoose.model('Contact'),
 	Customer = mongoose.model('Customer'),
 	Agent = mongoose.model('Agent');
-var limit = 2;
+
+var OBJ_LIMIT = 5;
 
 // Agent
 exports.createAgent = function(agentInfo, callback) {
@@ -33,21 +34,10 @@ exports.getAgentByEmail = function(email, password, callback) {
 	agentDS.getAgentByEmail(email, password, callback);
 };
 
-exports.getAgents = function(callback) {
-	agentDS.getAgents(function(agents) {
-		console.log(agents);
-		callback(agents);
-	});
+exports.getAgents = function(page_num, callback) {
+	var skip = (page_num-1)*OBJ_LIMIT;
+	agentDS.getAgents(OBJ_LIMIT, skip, callback);
 };
-
-exports.getAgentsPaginated = function(pageNum, callback) {
-	var skip = (pageNum-1)*limit;
-	agentDS.getAgentsPaginated(limit, skip, function(agents) {
-		console.log(agents);
-		callback(agents);
-	});
-};
-
 
 exports.updateAgent = function(agent, newInfo, callback) {
 	agentDS.updateAgent(agent, newInfo, callback);
@@ -73,7 +63,6 @@ exports.deleteContact = function(callback) {
 };
 
 exports.getContact = function(callback) {
-	console.log('get Contanct in crm called');
 	contactDS.getContact(function(contact) {
 		console.log(contact);
 		callback(contact);

@@ -101,21 +101,21 @@ exports.getAgentUpdate = function(req, res) {
 };
 
 exports.getAgents = function(req, res) {
-	var pageNum = req.query.pagenum;
+	var page_num = req.query.page;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
 
+	var prev_page;
+	if (page_num > 1) prev_page = '/agents?page=' + (page_num-1).toString();
+	else prev_page = '/agents/#';
 
-	agent_facade.getAgents(function(agents) {
+	var next_page = '/agents?page=' + (page_num+1).toString();
+
+	agent_facade.getAgents(page_num, function(agents) {
 		res.render('allagents', {
-			agents: agents
-		});
-	});
-};
-
-exports.getAgentsPaginated = function(req, res) {
-	var pageNum = req.query.pagenum;
-	agent_facade.getAgentsPaginated(pageNum, function(agents) {
-		res.render('allagents', {
-			agents: agents
+			agents: agents,
+			prev_page: prev_page,
+			next_page: next_page
 		});
 	});
 };
@@ -237,7 +237,7 @@ exports.deleteContact = function(req, res) {
 	});
 };
 
-exports.updateAgent = function(req, res){
+exports.updateAgent = function(req, res) {
 	var agentID = req.params.agentID;
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
@@ -271,9 +271,6 @@ exports.deleteAgent = function(req, res) {
 				agents: agents
 			});
 		});
-			//res.render('success', {
-			//	msg: 'deleted agent'
-			//});
 	});
 };
 

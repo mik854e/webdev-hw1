@@ -58,16 +58,8 @@ exports.getAgentByEmail = function(email, password, callback) {
 	crm_services.getAgentByEmail(email, password, callback);
 };
 
-exports.getAgents = function(callback) {
-	crm_services.getAgents(function(agents) {
-		callback(agents);
-	});
-};
-
-exports.getAgentsPaginated = function(pageNum, callback) {
-	crm_services.getAgentsPaginated(pageNum, function(agents) {
-		callback(agents);
-	});
+exports.getAgents = function(page_num, callback) {
+	crm_services.getAgents(page_num, callback);
 };
 
 exports.updateAgent = function(agentID, agentInfo, callback){

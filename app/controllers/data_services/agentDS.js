@@ -32,15 +32,8 @@ exports.getAgentByEmail = function(email, password, callback) {
 	});
 };
 
-exports.getAgents = function(callback) {
-	Agent.find({}, function(err, agents) {
-		callback(agents);
-	});
-};
-
-exports.getAgentsPaginated = function(limit, skip, callback) {
+exports.getAgents = function(limit, skip, callback) {
 	Agent.find({}).limit(limit).skip(skip).exec(function(err, agents) {
-		console.log(agents);
 		callback(agents);
 	});
 };
@@ -50,7 +43,7 @@ exports.updateAgent = function(agentID, newInfo, callback) {
 			{ _id: agentID }, 
 			{ $set: newInfo },
 			{},
-			function(err, agent){
+			function(err, agent) {
 				callback(agent);
 			}
 	);
