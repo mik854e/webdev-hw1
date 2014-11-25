@@ -55,38 +55,37 @@ exports.createContact = function(contactInfo, callback) {
 };
 
 exports.deleteContact = function(callback) {
-	console.log('delete contact in crm called');
 	contactDS.deleteContact(function (agent) {
-		console.log(agent);
 		callback(agent);
 	});
 };
 
 exports.getContact = function(callback) {
 	contactDS.getContact(function(contact) {
-		console.log(contact);
 		callback(contact);
 	});
 };
 
-exports.getContactHistory = function(agentID, customerID, callback) {
-	contactDS.getContactHistory(agentID, customerID, callback);
+exports.getContactHistory = function(agentID, customerID, page_num, callback) {
+	var skip = (page_num-1)*OBJ_LIMIT;
+	contactDS.getContactHistory(agentID, customerID, OBJ_LIMIT, skip, callback);
+};
+
+exports.getFullContactHistory = function(agentID, customerID, callback) {
+	contactDS.getFullContactHistory(agentID, customerID, callback);
 };
 
 exports.updateContact = function(contact, newInfo, callback) {
 	contactDS.updateContact(function (contact, newInfo) {
-		console.log(contact);
 		callback(contact, newInfo);
 	});
 };
-
 
 exports.deleteContact = function(contactID, callback) {
 	contactDS.deleteContact(contactID, function() {
 		callback();
 	});
 };
-
 
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
@@ -107,10 +106,9 @@ exports.getCustomerByEmail = function(email, password, callback) {
 	customerDS.getCustomerByEmail(email, password, callback);
 };
 
-exports.getCustomers = function(agentID, callback) {
-	customerDS.getCustomers(agentID, function(customers) {
-		callback(customers);
-	});
+exports.getCustomers = function(agentID, page_num, callback) {
+	var skip = (page_num-1)*OBJ_LIMIT;
+	customerDS.getCustomers(agentID, OBJ_LIMIT, skip, callback);
 };
 
 exports.updateCustomer = function(customerID, newInfo, callback) {

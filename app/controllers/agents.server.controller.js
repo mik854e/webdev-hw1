@@ -23,12 +23,17 @@ exports.createCustomer = function(req, res) {
 	    agentID: agentID
 	};
 	
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.createCustomer(customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
+			agent_facade.getCustomers(agentID, 1, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -77,11 +82,23 @@ exports.createAgent = function(req, res) {
 exports.getAgent = function(req, res) {
 	var agentID = req.params.agentID;
 
+	var page_num = req.query.page;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
+
+	var prev_page;
+	if (page_num > 1) prev_page = '/agents/' + agentID + '?page=' + (page_num-1).toString();
+	else prev_page = '/agents/' + agentID + '#';
+
+	var next_page = '/agents/' + agentID + '?page=' + (page_num+1).toString();
+
 	agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, function(customers) {
+		agent_facade.getCustomers(agentID, page_num, function(customers) {
 			res.render('agenthome', {
 				agent: agent,
-				customers: customers
+				customers: customers,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
@@ -91,7 +108,7 @@ exports.getAgentUpdate = function(req, res) {
 	var agentID = req.params.agentID;
 
 	agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, function(customers) {
+		agent_facade.getCustomers(agentID, 1, function(customers) {
 			res.render('agentUpdate', {
 				agent: agent,
 				customers: customers
@@ -124,12 +141,19 @@ exports.signinAgent = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 
+	var page_num = 1;
+
 	agent_facade.getAgentByEmail(email, password, function(agent) {
 		if (agent) {
-			agent_facade.getCustomers(agent._id.toString(), function(customers) {
+			var agentID = agent._id.toString();
+			var prev_page = '/agents/' + agentID + '#';
+			var next_page = '/agents/' + agentID + '?page=2';
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		}
@@ -143,12 +167,24 @@ exports.getCustomer = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var page_num = req.query.page;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
+
+	var prev_page;
+	if (page_num > 1) prev_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num-1).toString();
+	else prev_page = '/agents/' + agentID + '/customers/' + customerID + '/#';
+
+	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
+
 	agent_facade.getCustomer(customerID, function(customer) {
-		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+		agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 			res.render('customer', {
 				agentID: agentID,
 				customer: customer,
-				contactHistory : contactHistory
+				contactHistory : contactHistory,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
@@ -158,12 +194,18 @@ exports.getCustomerUpdate = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '/customers/' + customerID + '/#';
+	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
+
 	agent_facade.getCustomer(customerID, function(customer) {
-		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+		agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 			res.render('customerupdate', {
 				agentID: agentID,
 				customer: customer,
-				contactHistory : contactHistory
+				contactHistory : contactHistory,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
@@ -183,9 +225,13 @@ exports.createContact = function(req, res) {
 		timestamp: new Date()
 	};
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '/customers/' + customerID + '/#';
+	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
+
 	agent_facade.createContact(contactInfo, function() {
 		agent_facade.getCustomer(customerID, function(customer) {
-			agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+			agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 				res.render('customer', {
 					agentID: agentID,
 					customer: customer,
@@ -195,7 +241,6 @@ exports.createContact = function(req, res) {
 		});
 	});
 };
-
 
 exports.updateCustomer = function(req, res){
 	var agentID = req.params.agentID;
@@ -214,13 +259,18 @@ exports.updateCustomer = function(req, res){
 	    agentID: agentID
 	};
 	
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
-				console.log('Update');
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agentHome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -251,12 +301,18 @@ exports.updateAgent = function(req, res) {
 	    email: email
 	};
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -265,10 +321,16 @@ exports.updateAgent = function(req, res) {
 
 exports.deleteAgent = function(req, res) {
 	var agentID = req.params.agentID;
+	var page_num = 1;
+	var prev_page = '/agents/#';
+	var next_page = '/agents?page=' + (page_num+1).toString();
+
 	agent_facade.deleteAgent(agentID, function() {
-		agent_facade.getAgents(function(agents) {
+		agent_facade.getAgents(page_num, function(agents) {
 			res.render('allagents', {
-				agents: agents
+				agents: agents,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
