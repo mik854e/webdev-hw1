@@ -16,7 +16,8 @@ exports.signInCustomer = function(req, res) {
 				customer_facade.getContactHistory(agentID, customerID, function(contactHistory) {
 					res.render('customerhome', {
 						agent: agent,
-						contactHistory: contactHistory
+						contactHistory: contactHistory,
+						customerID: customerID
 					});
 				});
 			});
@@ -25,4 +26,44 @@ exports.signInCustomer = function(req, res) {
 			res.render('signin');
 		}
 	});
+};
+
+exports.updateAgent = function(req, res) {
+	var customerID = req.params.customerID;
+
+	customer_facade.getCustomer(customerID, function(customer) {
+		var agentID = customer.agentID;
+		customer_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+			var len = contactHistory.length;
+			if (len > 0) {
+				var last_time = contactHistory[len-1].timestamp;
+				var ms_day = 86400000;
+				if (Math.floor((last_time - new Date()) / ms_day) >= 3) {	// At least 72 hours has passed since last contact
+					customer_facade.setRandomAgent(customerID, function(agent) {
+						res.render('success', {
+							msg: 'Your new agent is ' + agent.firstName + ' ' + agent.lastName + '.'
+						});
+					});
+				}
+				else {
+					res.render('success', {
+						msg: 'Cannot assign a new agent if you have had contact with your current agent in the past 72 hours.'
+					});
+				}
+			}
+			else if (len === 0) {
+				customer_facade.setRandomAgent(customerID, function(agent) {
+					res.render('success', {
+						msg: 'Your new agent is ' + agent.firstName + ' ' + agent.lastName + '.'
+					});
+				});
+			}
+			else {
+				res.render('success', {
+					msg: 'Cannot assign a new agent if you have had contact with your current agent in the past 72 hours.'
+				});
+			}
+		});
+	});
+
 };

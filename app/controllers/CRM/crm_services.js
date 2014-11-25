@@ -16,28 +16,31 @@ exports.createAgent = function(agentInfo, callback) {
 };
 
 exports.deleteAgent = function(agentID, callback) {
-	console.log('delete agent in crm called');
-	agentDS.deleteAgent(agentID, function(err){
+	agentDS.deleteAgent(agentID, function(err) {
 		callback();
 	});
 };
 
-exports.getAgent = function(agentID, callback){
+exports.getAgent = function(agentID, callback) {
 	agentDS.getAgent(agentID, callback);
 };
 
-exports.getAgentByEmail = function(email, password, callback){
+exports.getRandomAgent = function(callback) {
+	agentDS.getRandomAgent(callback);
+};
+
+exports.getAgentByEmail = function(email, password, callback) {
 	agentDS.getAgentByEmail(email, password, callback);
 };
 
-exports.getAgents = function(callback){
+exports.getAgents = function(callback) {
 	agentDS.getAgents(function(agents) {
 		console.log(agents);
 		callback(agents);
 	});
 };
 
-exports.getAgentsPaginated = function(pageNum, callback){
+exports.getAgentsPaginated = function(pageNum, callback) {
 	var skip = (pageNum-1)*limit;
 	agentDS.getAgentsPaginated(limit, skip, function(agents) {
 		console.log(agents);
@@ -46,8 +49,7 @@ exports.getAgentsPaginated = function(pageNum, callback){
 };
 
 
-exports.updateAgent = function(agent, newInfo, callback){
-	console.log('update agent in crm called');
+exports.updateAgent = function(agent, newInfo, callback) {
 	agentDS.updateAgent(agent, newInfo, callback);
 	/*
 	agentDS.updateAgent(function (agent, newInfo) {
@@ -62,7 +64,7 @@ exports.createContact = function(contactInfo, callback) {
 	contactDS.createContact(contactInfo, callback);
 };
 
-exports.deleteContact = function(callback){
+exports.deleteContact = function(callback) {
 	console.log('delete contact in crm called');
 	contactDS.deleteContact(function (agent) {
 		console.log(agent);
@@ -70,7 +72,7 @@ exports.deleteContact = function(callback){
 	});
 };
 
-exports.getContact = function(callback){
+exports.getContact = function(callback) {
 	console.log('get Contanct in crm called');
 	contactDS.getContact(function(contact) {
 		console.log(contact);
@@ -78,12 +80,11 @@ exports.getContact = function(callback){
 	});
 };
 
-exports.getContactHistory = function(agentID, customerID, callback){
+exports.getContactHistory = function(agentID, customerID, callback) {
 	contactDS.getContactHistory(agentID, customerID, callback);
 };
 
-exports.updateContact = function(contact, newInfo, callback){
-	console.log('update contact in crm called');
+exports.updateContact = function(contact, newInfo, callback) {
 	contactDS.updateContact(function (contact, newInfo) {
 		console.log(contact);
 		callback(contact, newInfo);
@@ -103,14 +104,13 @@ exports.createCustomer = function(customerInfo, callback) {
 	customerDS.createCustomer(customerInfo, callback);
 };
 
-exports.deleteCustomer = function(customerID, callback){
-	console.log('create customer in crm called');
+exports.deleteCustomer = function(customerID, callback) {
 	customerDS.deleteCustomer(customerID, function() {
 		callback();
 	});
 };
 
-exports.getCustomer = function(customerID, callback){
+exports.getCustomer = function(customerID, callback) {
 	customerDS.getCustomer(customerID, callback);
 };
 
@@ -119,14 +119,12 @@ exports.getCustomerByEmail = function(email, password, callback) {
 };
 
 exports.getCustomers = function(agentID, callback) {
-	console.log('get customers in crm called');
 	customerDS.getCustomers(agentID, function(customers) {
 		callback(customers);
 	});
 };
 
-exports.updateCustomer = function(customerID, newInfo, callback){
-	console.log('update a customer in crm called');
+exports.updateCustomer = function(customerID, newInfo, callback) {
 	customerDS.updateCustomer(customerID, newInfo, callback);
 	/*
 	customerDS.updateCustomer(function(customerID, newInfo) {

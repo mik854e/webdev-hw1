@@ -4,11 +4,13 @@
 
 <div>
 	<h3>Agent: {{agent.firstName}} {{agent.lastName}}</h3>
+  <p>
+    <a class="button" href='/customers/{{customerID}}/agents/update'>Get New Agent</a>
+  </p>
   <ul>
       <li><b>Email: </b>{{agent.email}}</li>
       <li><b>Phone Number: </b>{{agent.phoneNumber}}</li>
   </ul>
-
 
   </table>
     <div class="panel panel-default">

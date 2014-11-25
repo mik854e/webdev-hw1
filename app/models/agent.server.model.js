@@ -1,8 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+	random = require('mongoose-simple-random'),
 	Schema = mongoose.Schema;
-
 
 var AgentSchema = new Schema({
 	firstName: {
@@ -31,4 +31,5 @@ var AgentSchema = new Schema({
 	}
 });
 
+AgentSchema.plugin(random);
 mongoose.model('Agent', AgentSchema);

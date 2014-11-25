@@ -11,10 +11,18 @@ exports.createAgent = function(agentInfo, callback) {
 	});
 };
 
-
 exports.getAgent = function(agentID, callback) {
 	Agent.findOne({ _id: agentID }, function(err, agent) {
 		callback(agent);
+	});
+};
+
+exports.getRandomAgent = function(callback) {
+	Agent.findOneRandom(function(err, agent) {
+		if (err) console.log(err);
+		else {
+			callback(agent);
+		}
 	});
 };
 
@@ -38,25 +46,14 @@ exports.getAgentsPaginated = function(limit, skip, callback) {
 };
 
 exports.updateAgent = function(agentID, newInfo, callback) {
-	var new_firstName = newInfo.firstName;
-	var new_lastName = newInfo.lastName;
-	var new_phoneNumber =  newInfo.phoneNumber;
-	var new_email = newInfo.email;
 	Agent.update(
-				{ _id: agentID }, 
-				{ $set: 
-					{
-					firstName: new_firstName,
-					lastName: new_lastName,
-					phoneNumber: new_phoneNumber,
-					email: new_email
-					}
-				},
-				{},
-				function(err, agent){
-					callback(agent);
-				}
-			);
+			{ _id: agentID }, 
+			{ $set: newInfo },
+			{},
+			function(err, agent){
+				callback(agent);
+			}
+	);
 };
 
 

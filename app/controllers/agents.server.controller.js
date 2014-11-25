@@ -4,7 +4,7 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	agent_facade = require('./facades/agent_facade.js');
 
-var HOST = "http://localhost:3000";
+var HOST = 'http://localhost:3000';
 
 exports.createCustomer = function(req, res) {
 	var agentID = req.params.agentID;
@@ -40,10 +40,6 @@ exports.deleteCustomer = function(req, res) {
 	var customerID = req.params.customerID;
 
 	agent_facade.deleteCustomer(customerID, function() {
-		//res.render('success', {
-		//	msg: 'Customer deleted successfully!'
-		//});
-		//res.render()
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, function(customers) {
 				res.render('agenthome', {
@@ -51,19 +47,6 @@ exports.deleteCustomer = function(req, res) {
 					customers: customers
 				});
 			});
-		});
-	});
-};
-
-exports.createContact = function(req, res) {
-	var agentID = req.params.agentID;
-	var customerID = req.params.customerID;
-
-	var contactType = req.body.contactType;
-
-	agent_facade.createContact(agentID, customerID, contactType, function() {
-		res.render('success', {
-			msg: 'Contact created successfully!'
 		});
 	});
 };
@@ -83,10 +66,7 @@ exports.createAgent = function(req, res) {
 	    password: password
 	};
 
-	console.log("creating agent");
 	agent_facade.createAgent(agentInfo, function(agent) {
-		console.log('CREATE');
-		console.log(agent);
 		res.render('agenthome', {
 			agent: agent
 		});
