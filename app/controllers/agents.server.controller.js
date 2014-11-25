@@ -388,12 +388,20 @@ exports.updateAgentAsync = function(req, res) {
 	var lastName = req.body.lastName;
 	var email = req.body.email;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var agentInfo = {
 		firstName: firstName,
-		lastName: lastName,
-		phoneNumber: phoneNumber,
-		email: email
+	    lastName: lastName,
+	    phoneNumber: phoneNumber,
+	    email: email,
+	   	street: street,
+	    city: city,
+	    zip: zip,
+	    state: state
 	};
 
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
