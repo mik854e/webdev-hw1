@@ -14,18 +14,16 @@ exports.deleteCustomer = function(customerID, callback) {
 	});
 };
 
-exports.getCustomers = function(agentID, callback) {
-	crm_services.getCustomers(agentID, function(customers) {
-		callback(customers);
-	});
+exports.getCustomers = function(agentID, page_num, callback) {
+	crm_services.getCustomers(agentID, page_num, callback);
 };
 
 exports.getCustomer = function(customerID, callback) {
 	crm_services.getCustomer(customerID, callback);
 };
 
-exports.getContactHistory = function(agentID, customerID, callback) {
-	crm_services.getContactHistory(agentID, customerID, callback);
+exports.getContactHistory = function(agentID, customerID, page_num, callback) {
+	crm_services.getContactHistory(agentID, customerID, page_num, callback);
 };
 
 exports.createContact = function(contactInfo, callback) {
@@ -58,16 +56,8 @@ exports.getAgentByEmail = function(email, password, callback) {
 	crm_services.getAgentByEmail(email, password, callback);
 };
 
-exports.getAgents = function(callback) {
-	crm_services.getAgents(function(agents) {
-		callback(agents);
-	});
-};
-
-exports.getAgentsPaginated = function(pageNum, callback) {
-	crm_services.getAgentsPaginated(pageNum, function(agents) {
-		callback(agents);
-	});
+exports.getAgents = function(page_num, callback) {
+	crm_services.getAgents(page_num, callback);
 };
 
 exports.updateAgent = function(agentID, agentInfo, callback){

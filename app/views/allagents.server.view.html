@@ -2,13 +2,25 @@
 
 {% block content %}
 
-<div>
-	<h2>All Agents</h2>
-  <ul>
+<h3></h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>Agents</h3></div>
+  <table class="table table-hover">
     {% for agent in agents %}
-      <li><a href='/agents/{{agent._id.toString()}}'>{{agent.firstName}} {{agent.lastName}}</a></li>
+      <tr>
+        <td><a href='/agents/{{agent._id.toString()}}'>{{agent.firstName}} {{agent.lastName}}</a></td>
+        <td>
+      </tr>
     {% endfor %}
-  </ul>
+  </table>
 </div>
+
+<nav>
+  <ul class="pager">
+    <li><a href="{{prev_page}}">Previous</a></li>
+    <li><a href="{{next_page}}">Next</a></li>
+  </ul>
+</nav>
 
 {% endblock %}

@@ -31,12 +31,17 @@ exports.createCustomer = function(req, res) {
 	    state: state
 	};
 	
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.createCustomer(customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
+			agent_facade.getCustomers(agentID, 1, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -48,10 +53,6 @@ exports.deleteCustomer = function(req, res) {
 	var customerID = req.params.customerID;
 
 	agent_facade.deleteCustomer(customerID, function() {
-		//res.render('success', {
-		//	msg: 'Customer deleted successfully!'
-		//});
-		//res.render()
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, function(customers) {
 				res.render('agenthome', {
@@ -59,19 +60,6 @@ exports.deleteCustomer = function(req, res) {
 					customers: customers
 				});
 			});
-		});
-	});
-};
-
-exports.createContact = function(req, res) {
-	var agentID = req.params.agentID;
-	var customerID = req.params.customerID;
-
-	var contactType = req.body.contactType;
-
-	agent_facade.createContact(agentID, customerID, contactType, function() {
-		res.render('success', {
-			msg: 'Contact created successfully!'
 		});
 	});
 };
@@ -101,10 +89,7 @@ exports.createAgent = function(req, res) {
 	    customer_count: customer_count
 	};
 
-	console.log('creating agent');
 	agent_facade.createAgent(agentInfo, function(agent) {
-		console.log('CREATE');
-		console.log(agent);
 		res.render('agenthome', {
 			agent: agent
 		});
@@ -115,11 +100,23 @@ exports.createAgent = function(req, res) {
 exports.getAgent = function(req, res) {
 	var agentID = req.params.agentID;
 
+	var page_num = req.query.page;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
+
+	var prev_page;
+	if (page_num > 1) prev_page = '/agents/' + agentID + '?page=' + (page_num-1).toString();
+	else prev_page = '/agents/' + agentID + '#';
+
+	var next_page = '/agents/' + agentID + '?page=' + (page_num+1).toString();
+
 	agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, function(customers) {
+		agent_facade.getCustomers(agentID, page_num, function(customers) {
 			res.render('agenthome', {
 				agent: agent,
-				customers: customers
+				customers: customers,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
@@ -129,7 +126,7 @@ exports.getAgentUpdate = function(req, res) {
 	var agentID = req.params.agentID;
 
 	agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, function(customers) {
+		agent_facade.getCustomers(agentID, 1, function(customers) {
 			res.render('agentUpdate', {
 				agent: agent,
 				customers: customers
@@ -139,21 +136,21 @@ exports.getAgentUpdate = function(req, res) {
 };
 
 exports.getAgents = function(req, res) {
-	var pageNum = req.query.pagenum;
+	var page_num = req.query.page;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
 
+	var prev_page;
+	if (page_num > 1) prev_page = '/agents?page=' + (page_num-1).toString();
+	else prev_page = '/agents/#';
 
-	agent_facade.getAgents(function(agents) {
+	var next_page = '/agents?page=' + (page_num+1).toString();
+
+	agent_facade.getAgents(page_num, function(agents) {
 		res.render('allagents', {
-			agents: agents
-		});
-	});
-};
-
-exports.getAgentsPaginated = function(req, res) {
-	var pageNum = req.query.pagenum;
-	agent_facade.getAgentsPaginated(pageNum, function(agents) {
-		res.render('allagents', {
-			agents: agents
+			agents: agents,
+			prev_page: prev_page,
+			next_page: next_page
 		});
 	});
 };
@@ -162,12 +159,19 @@ exports.signinAgent = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 
+	var page_num = 1;
+
 	agent_facade.getAgentByEmail(email, password, function(agent) {
 		if (agent) {
-			agent_facade.getCustomers(agent._id.toString(), function(customers) {
+			var agentID = agent._id.toString();
+			var prev_page = '/agents/' + agentID + '#';
+			var next_page = '/agents/' + agentID + '?page=2';
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		}
@@ -181,12 +185,24 @@ exports.getCustomer = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var page_num = req.query.page;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
+
+	var prev_page;
+	if (page_num > 1) prev_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num-1).toString();
+	else prev_page = '/agents/' + agentID + '/customers/' + customerID + '/#';
+
+	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
+
 	agent_facade.getCustomer(customerID, function(customer) {
-		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+		agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 			res.render('customer', {
 				agentID: agentID,
 				customer: customer,
-				contactHistory : contactHistory
+				contactHistory : contactHistory,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
@@ -196,12 +212,18 @@ exports.getCustomerUpdate = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '/customers/' + customerID + '/#';
+	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
+
 	agent_facade.getCustomer(customerID, function(customer) {
-		agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+		agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 			res.render('customerupdate', {
 				agentID: agentID,
 				customer: customer,
-				contactHistory : contactHistory
+				contactHistory : contactHistory,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
 	});
@@ -229,9 +251,13 @@ exports.createContact = function(req, res) {
 		state: state
 	};
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '/customers/' + customerID + '/#';
+	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
+
 	agent_facade.createContact(contactInfo, function() {
 		agent_facade.getCustomer(customerID, function(customer) {
-			agent_facade.getContactHistory(agentID, customerID, function(contactHistory) {
+			agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 				res.render('customer', {
 					agentID: agentID,
 					customer: customer,
@@ -241,7 +267,6 @@ exports.createContact = function(req, res) {
 		});
 	});
 };
-
 
 exports.updateCustomer = function(req, res){
 	var agentID = req.params.agentID;
@@ -268,13 +293,18 @@ exports.updateCustomer = function(req, res){
 	    state: state
 	};
 	
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.updateCustomer(agentID, customerID, customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
-				console.log('Update');
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agentHome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -291,7 +321,7 @@ exports.deleteContact = function(req, res) {
 	});
 };
 
-exports.updateAgent = function(req, res){
+exports.updateAgent = function(req, res) {
 	var agentID = req.params.agentID;
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
@@ -313,12 +343,18 @@ exports.updateAgent = function(req, res){
 	    state: state
 	};
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -327,15 +363,18 @@ exports.updateAgent = function(req, res){
 
 exports.deleteAgent = function(req, res) {
 	var agentID = req.params.agentID;
+	var page_num = 1;
+	var prev_page = '/agents/#';
+	var next_page = '/agents?page=' + (page_num+1).toString();
+
 	agent_facade.deleteAgent(agentID, function() {
-		agent_facade.getAgents(function(agents) {
+		agent_facade.getAgents(page_num, function(agents) {
 			res.render('allagents', {
-				agents: agents
+				agents: agents,
+				prev_page: prev_page,
+				next_page: next_page
 			});
 		});
-			//res.render('success', {
-			//	msg: 'deleted agent'
-			//});
 	});
 };
 
@@ -345,12 +384,20 @@ exports.updateAgentAsync = function(req, res) {
 	var lastName = req.body.lastName;
 	var email = req.body.email;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var agentInfo = {
 		firstName: firstName,
-		lastName: lastName,
-		phoneNumber: phoneNumber,
-		email: email
+	    lastName: lastName,
+	    phoneNumber: phoneNumber,
+	    email: email,
+	   	street: street,
+	    city: city,
+	    zip: zip,
+	    state: state
 	};
 
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {

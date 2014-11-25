@@ -8,7 +8,8 @@ var _ = require('lodash'),
 	Contact = mongoose.model('Contact'),
 	Customer = mongoose.model('Customer'),
 	Agent = mongoose.model('Agent');
-var limit = 2;
+
+var OBJ_LIMIT = 5;
 
 // Agent
 exports.createAgent = function(agentInfo, callback) {
@@ -16,38 +17,29 @@ exports.createAgent = function(agentInfo, callback) {
 };
 
 exports.deleteAgent = function(agentID, callback) {
-	console.log('delete agent in crm called');
-	agentDS.deleteAgent(agentID, function(err){
+	agentDS.deleteAgent(agentID, function(err) {
 		callback();
 	});
 };
 
-exports.getAgent = function(agentID, callback){
+exports.getAgent = function(agentID, callback) {
 	agentDS.getAgent(agentID, callback);
 };
 
-exports.getAgentByEmail = function(email, password, callback){
+exports.getRandomAgent = function(callback) {
+	agentDS.getRandomAgent(callback);
+};
+
+exports.getAgentByEmail = function(email, password, callback) {
 	agentDS.getAgentByEmail(email, password, callback);
 };
 
-exports.getAgents = function(callback){
-	agentDS.getAgents(function(agents) {
-		console.log(agents);
-		callback(agents);
-	});
+exports.getAgents = function(page_num, callback) {
+	var skip = (page_num-1)*OBJ_LIMIT;
+	agentDS.getAgents(OBJ_LIMIT, skip, callback);
 };
 
-exports.getAgentsPaginated = function(pageNum, callback){
-	var skip = (pageNum-1)*limit;
-	agentDS.getAgentsPaginated(limit, skip, function(agents) {
-		console.log(agents);
-		callback(agents);
-	});
-};
-
-
-exports.updateAgent = function(agent, newInfo, callback){
-	console.log('update agent in crm called');
+exports.updateAgent = function(agent, newInfo, callback) {
 	agentDS.updateAgent(agent, newInfo, callback);
 	/*
 	agentDS.updateAgent(function (agent, newInfo) {
@@ -62,41 +54,38 @@ exports.createContact = function(contactInfo, callback) {
 	contactDS.createContact(contactInfo, callback);
 };
 
-exports.deleteContact = function(callback){
-	console.log('delete contact in crm called');
+exports.deleteContact = function(callback) {
 	contactDS.deleteContact(function (agent) {
-		console.log(agent);
 		callback(agent);
 	});
 };
 
-exports.getContact = function(callback){
-	console.log('get Contanct in crm called');
+exports.getContact = function(callback) {
 	contactDS.getContact(function(contact) {
-		console.log(contact);
 		callback(contact);
 	});
 };
 
-exports.getContactHistory = function(agentID, customerID, callback){
-	contactDS.getContactHistory(agentID, customerID, callback);
+exports.getContactHistory = function(agentID, customerID, page_num, callback) {
+	var skip = (page_num-1)*OBJ_LIMIT;
+	contactDS.getContactHistory(agentID, customerID, OBJ_LIMIT, skip, callback);
 };
 
-exports.updateContact = function(contact, newInfo, callback){
-	console.log('update contact in crm called');
+exports.getFullContactHistory = function(agentID, customerID, callback) {
+	contactDS.getFullContactHistory(agentID, customerID, callback);
+};
+
+exports.updateContact = function(contact, newInfo, callback) {
 	contactDS.updateContact(function (contact, newInfo) {
-		console.log(contact);
 		callback(contact, newInfo);
 	});
 };
-
 
 exports.deleteContact = function(contactID, callback) {
 	contactDS.deleteContact(contactID, function() {
 		callback();
 	});
 };
-
 
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
@@ -123,14 +112,13 @@ exports.createCustomer = function(customerInfo, callback) {
 	});
 };
 
-exports.deleteCustomer = function(customerID, callback){
-	console.log('create customer in crm called');
+exports.deleteCustomer = function(customerID, callback) {
 	customerDS.deleteCustomer(customerID, function() {
 		callback();
 	});
 };
 
-exports.getCustomer = function(customerID, callback){
+exports.getCustomer = function(customerID, callback) {
 	customerDS.getCustomer(customerID, callback);
 };
 
@@ -138,15 +126,12 @@ exports.getCustomerByEmail = function(email, password, callback) {
 	customerDS.getCustomerByEmail(email, password, callback);
 };
 
-exports.getCustomers = function(agentID, callback) {
-	console.log('get customers in crm called');
-	customerDS.getCustomers(agentID, function(customers) {
-		callback(customers);
-	});
+exports.getCustomers = function(agentID, page_num, callback) {
+	var skip = (page_num-1)*OBJ_LIMIT;
+	customerDS.getCustomers(agentID, OBJ_LIMIT, skip, callback);
 };
 
-exports.updateCustomer = function(customerID, newInfo, callback){
-	console.log('update a customer in crm called');
+exports.updateCustomer = function(customerID, newInfo, callback) {
 	customerDS.updateCustomer(customerID, newInfo, callback);
 	/*
 	customerDS.updateCustomer(function(customerID, newInfo) {
