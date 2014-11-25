@@ -89,7 +89,27 @@ exports.deleteContact = function(contactID, callback) {
 
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
-	customerDS.createCustomer(customerInfo, callback);
+	console.log('customer info ' + customerInfo.firstName);
+	agentDS.getAgentState(customerInfo.agentID, function(agent_state){		
+		agentDS.getAgentCustomerCount(customerInfo.agentID, function(agent_count){
+			if( (agent_state !== 'TX') || (agent_state !== 'NY') ){
+				console.log('Count: ' +agent_count);
+				if(agent_count <= 5){
+					console.log('customer Added');
+					customerDS.createCustomer(customerInfo, callback);
+					agentDS.updateCustomerCount(customerInfo.agentID, agent_count+1,function(new_count){});
+				}else {
+					//alert('ERROR: Exceeded customer limit. Cannot add customer to agent');
+					console.log('ERROR: Exceeded customer limit. Cannot add customer to agent');
+				}
+			}else{
+				console.log('customer Added');
+				console.log('customer info');
+				customerDS.createCustomer(customerInfo, callback);
+				agentDS.updateCustomerCount(customerInfo.agentID, agent_count + 1 ,function(new_count){});
+			}
+		});
+	});
 };
 
 exports.deleteCustomer = function(customerID, callback) {
@@ -112,11 +132,26 @@ exports.getCustomers = function(agentID, page_num, callback) {
 };
 
 exports.updateCustomer = function(customerID, newInfo, callback) {
-	customerDS.updateCustomer(customerID, newInfo, callback);
-	/*
-	customerDS.updateCustomer(function(customerID, newInfo) {
-		console.log(customerID);
-		callback(customerID, newInfo);
+	console.log('update a customer in crm called');
+	var oneWeek = 604800000;
+	customerDS.getCustomer(customerID, function(customer) {
+		agentDS.getAgentState(customer.agentID, function(agent_state) {
+			if ((agent_state !== 'MN') || (agent_state !== 'CT')) {
+				var last_update = customer.update_timestamp.valueOf();
+				var curr_update = newInfo.update_timestamp.valueOf();
+				if ( (curr_update - last_update) >= oneWeek ) {
+					console.log('Update customer');
+					customerDS.updateCustomer(customerID, newInfo, callback);
+				} 
+				else {
+					console.log('ERROR: Customer information cannot be updated. One Week has not passed');
+					// ALERT
+				}
+			} 
+			else {
+				console.log('Update customer');
+				customerDS.updateCustomer(customerID, newInfo, callback);
+			}
+		});
 	});
-*/
 };

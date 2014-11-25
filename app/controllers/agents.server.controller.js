@@ -13,6 +13,11 @@ exports.createCustomer = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
+	var update_timestamp = new Date();
 
 	var customerInfo = {
 		firstName: firstName,
@@ -20,7 +25,12 @@ exports.createCustomer = function(req, res) {
 	    phoneNumber: phoneNumber,
 	    email: email,
 	    password: password,
-	    agentID: agentID
+	    agentID: agentID,
+	   	street: street,
+	    city: city,
+	    zip: zip,
+	    state: state,
+	    update_timestamp: update_timestamp
 	};
 	
 	var prev_page = '/agents/' + agentID + '#';
@@ -62,13 +72,23 @@ exports.createAgent = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
+	var customer_count = 0;
 
 	var agentInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email,
-	    password: password
+	    password: password,
+	    street: street,
+	    city: city,
+	    zip: zip,
+	    state: state,
+	    customer_count: customer_count
 	};
 
 	agent_facade.createAgent(agentInfo, function(agent) {
@@ -216,13 +236,21 @@ exports.createContact = function(req, res) {
 	var customerID = req.params.customerID;
 	var contactType = req.body.contactType;
 	var summary = req.body.summary;
-
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
+	var date = new Date();
 	var contactInfo = {
 		agentID: agentID,
 		customerID: customerID,
 		contactType: contactType,
 		summary: summary,
-		timestamp: new Date()
+		timestamp: new Date(),
+		street: street,
+		city: city,
+		zip: zip,
+		state: state
 	};
 
 	var page_num = 1;
@@ -250,13 +278,23 @@ exports.updateCustomer = function(req, res){
 	var lastName = req.body.lastName;
 	var email = req.body.email;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
+	var update_timestamp = new Date();
 
 	var customerInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
 	    email: email,
-	    agentID: agentID
+	    agentID: agentID,
+	    street: street,
+	    city: city,
+	    zip: zip,
+	    state: state,
+	    update_timestamp: update_timestamp
 	};
 	
 	var page_num = 1;
@@ -293,12 +331,20 @@ exports.updateAgent = function(req, res) {
 	var lastName = req.body.lastName;
 	var email = req.body.email;
 	var phoneNumber = req.body.phoneNumber;
+	var street = req.body.street;
+	var city = req.body.city;
+	var zip = req.body.zip;
+	var state = req.body.state;
 
 	var agentInfo = {
 		firstName: firstName,
 	    lastName: lastName,
 	    phoneNumber: phoneNumber,
-	    email: email
+	    email: email,
+	   	street: street,
+	    city: city,
+	    zip: zip,
+	    state: state
 	};
 
 	var page_num = 1;

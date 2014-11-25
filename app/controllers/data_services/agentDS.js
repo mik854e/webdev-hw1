@@ -55,3 +55,30 @@ exports.deleteAgent = function(agentID, callback) {
 		callback(err);
 	});
 };
+
+exports.getAgentState = function(agentID, callback){
+	Agent.findOne({ _id: agentID }, function(err, agent){
+		callback(agent.state);
+	}); 
+};
+
+exports.getAgentCustomerCount = function(agentID, callback){
+	Agent.findOne({ _id: agentID }, function(err, agent){
+		callback(agent.customer_count);
+	}); 
+};
+
+exports.updateCustomerCount = function(agentID, count, callback){
+	Agent.update(
+				{ _id: agentID }, 
+				{ $set: 
+					{
+					customer_count: count
+					}
+				},
+				{},
+				function(err, agent){
+					callback(agent);
+				}
+			);
+};
