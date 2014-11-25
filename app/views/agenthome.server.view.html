@@ -13,7 +13,7 @@
   </p>
 
   <div class="panel panel-default">
-    <div class="panel-heading">My Customers</div>
+    <div class="panel-heading"><b>My Customers</b></div>
     <table class="table table-hover">
       <tr>
         <th>Name</th>
@@ -30,6 +30,13 @@
       {% endfor %}
     </table>
   </div>
+
+<nav>
+  <ul class="pager">
+    <li><a href="{{prev_page}}">Previous</a></li>
+    <li><a href="{{next_page}}">Next</a></li>
+  </ul>
+</nav>
 
 
 <div>
