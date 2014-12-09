@@ -3,6 +3,7 @@ module.exports = function(req, res, next) {
     console.log(req.app);
     var cont = false;
     var inUUID = req.headers.uuid;
+    
     var knownUUID = req.app.UUIDs[inUUID];
 
     console.log("Known UUIDS = " + JSON.stringify(req.app.UUIDs));

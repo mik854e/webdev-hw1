@@ -85,3 +85,48 @@ ITEMS = {
 			'quantity': '4',
 			'aws': '' }
 }
+shopping_cart = {} # {SKU: quantity, SKU: quantity}
+
+def add_to_cart(SKU, quantity_to_add):
+	if item[SKU]['quantity'] >= quantity_to_add:
+		if SKU in shopping_cart:
+			shopping_cart['SKU'] = shopping_cart['SKU'] + quantity_to_add
+		else:
+			shopping_cart['SKU'] = quantity_to_add
+		item[SKU]['quantity'] = item[SKU]['quantity'] - quantity_to_add
+
+def remove_from_cart(SKU, quantity_to_remove):
+	if SKU in shopping_cart:
+		if shopping_cart[SKU] == quantity_to_remove:
+			del shopping_cart[SKU]
+		else:
+			shopping_cart['SKU'] = shopping_cart['SKU'] - quantity_to_remove
+		item[SKU]['quantity'] = item[SKU]['quantity'] + quantity_to_remove
+
+def getEntries(SKU = None, name = None, desc = None , size = None , color = None , quantity = None): #how many red items with quanity 3 = (null, )
+	entries = []
+	for entry in ITEMS:
+		if not SKU or ITEMS[entry] == SKU:
+			if not name or ITEMS[entry]['name'] == name:
+				if not desc or ITEMS[entry]['desc'] == desc:
+					if not size or ITEMS[entry]['size'] == size:
+						if not color or ITEMS[entry]['color'] == color:
+							if not quantity or ITEMS[entry]['quantity'] == quantity: 
+								entries = entries + ITEMS[entry]
+	return entries
+
+def how_many(SKU = None, name = None, desc = None , size = None , color = None , quantity = None): #how many red items with quanity 3 = (null, )
+	count = 0
+	entries = getSKUS(SKU, name, desc, size, color, quantity)
+	for entry in entries:
+		count = count + entries[entry]['quantity']
+
+def remove_from_cart(SKU = None, name = None, desc = None , size = None , color = None , quantity = None, quantity_to_remove = 0): #how many red items with quanity 3 = (null, )
+	entries = getSKUS(SKU, name, desc, size, color, quantity)
+	for entry in entries:
+		remove_from_cart(ITEMS[entry]['SKU'], quantity_to_remove)
+def add_to_cart(SKU = None, name = None, desc = None , size = None , color = None , quantity = None, quantity_to_add = 0): #how many red items with quanity 3 = (null, )
+	entries = getSKUS(SKU, name, desc, size, color, quantity)
+	for entry in entries:
+		add_to_cart(ITEMS[entry]['SKU'], quantity_to_add)
+
