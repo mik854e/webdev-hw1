@@ -1,6 +1,5 @@
 import boto.sdb
 from flask import Flask, jsonify, redirect, request, url_for
-import json
 
 app = Flask(__name__)
 
