@@ -1,0 +1,26 @@
+{% extends 'layout.server.view.html' %}
+
+{% block content %}
+
+<h3></h3>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>Customers</h3></div>
+  <table class="table table-hover">
+    {% for customer in customers %}
+      <tr>
+        <td><a href='/customers/{{customer._id.toString()}}'>{{customer.firstName}} {{customer.lastName}}</a></td>
+        <td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<nav>
+  <ul class="pager">
+    <li><a href="{{prev_page}}">Previous</a></li>
+    <li><a href="{{next_page}}">Next</a></li>
+  </ul>
+</nav>
+
+{% endblock %}

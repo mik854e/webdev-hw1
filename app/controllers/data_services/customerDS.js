@@ -24,8 +24,8 @@ exports.getCustomerByEmail = function(email, password, callback) {
 	});
 };
 
-exports.getCustomers = function(agentID, limit, skip, callback) {
-	Customer.find({ agentID: agentID }).limit(limit).skip(skip).exec(function(err, customers) {
+exports.getCustomers = function(limit, skip, params, callback) {
+	Customer.find(params).limit(limit).skip(skip).exec(function(err, customers) {
 		callback(customers);
 	});
 };

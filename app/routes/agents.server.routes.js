@@ -22,7 +22,9 @@ module.exports = function(app) {
 	app.route('/agents/:agentID').post(agent.updateAgent);
 	app.route('/agents/:agentID/delete').get(agent.deleteAgent);
 
-	
+	app.route('/contacts').get(agent.getAllContacts);
+
+
 	// Queueing
 	app.route('/createAgent').post(agent.createAgent);
 	app.route('/updateAgent').post(agent.updateAgent);

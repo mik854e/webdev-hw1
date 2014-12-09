@@ -44,7 +44,7 @@ exports.createCustomer = function(req, res) {
 						if(agent_customer_count <= 5){
 							agent_facade.createCustomer(customerInfo, function (customer){
 								agent_facade.getAgent(agentID, function(agent) {
-									agent_facade.getCustomers(agentID, 1, function(customers) {
+									agent_facade.getCustomers(agentID, 1, {}, function(customers) {
 										res.render('agenthome', {
 											agent: agent,
 											customers: customers,
@@ -62,7 +62,7 @@ exports.createCustomer = function(req, res) {
 				}else{
 					agent_facade.createCustomer(customerInfo, function (customer){
 						agent_facade.getAgent(agentID, function(agent) {
-							agent_facade.getCustomers(agentID, 1, function(customers) {
+							agent_facade.getCustomers(agentID, 1, {}, function(customers) {
 								res.render('agenthome', {
 									agent: agent,
 									customers: customers,
@@ -87,7 +87,7 @@ exports.deleteCustomer = function(req, res) {
 
 	agent_facade.deleteCustomer(customerID, function() {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, page_num, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, {}, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
 					customers: customers,
@@ -135,6 +135,7 @@ exports.createAgent = function(req, res) {
 exports.getAgent = function(req, res) {
 	var agentID = req.params.agentID;
 
+	var params = req.query;
 	var page_num = req.query.page;
 	if (!page_num) page_num = 1;
 	else page_num = parseInt(page_num);
@@ -146,7 +147,7 @@ exports.getAgent = function(req, res) {
 	var next_page = '/agents/' + agentID + '?page=' + (page_num+1).toString();
 
 	agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, page_num, function(customers) {
+		agent_facade.getCustomers(agentID, page_num, params, function(customers) {
 			res.render('agenthome', {
 				agent: agent,
 				customers: customers,
@@ -161,7 +162,7 @@ exports.getAgentUpdate = function(req, res) {
 	var agentID = req.params.agentID;
 
 	agent_facade.getAgent(agentID, function(agent) {
-		agent_facade.getCustomers(agentID, 1, function(customers) {
+		agent_facade.getCustomers(agentID, 1, {}, function(customers) {
 			res.render('agentUpdate', {
 				agent: agent,
 				customers: customers
@@ -172,6 +173,7 @@ exports.getAgentUpdate = function(req, res) {
 
 exports.getAgents = function(req, res) {
 	var page_num = req.query.page;
+	var params = req.query;
 	if (!page_num) page_num = 1;
 	else page_num = parseInt(page_num);
 
@@ -181,7 +183,7 @@ exports.getAgents = function(req, res) {
 
 	var next_page = '/agents?page=' + (page_num+1).toString();
 
-	agent_facade.getAgents(page_num, function(agents) {
+	agent_facade.getAgents(page_num, params, function(agents) {
 		res.render('allagents', {
 			agents: agents,
 			prev_page: prev_page,
@@ -201,7 +203,7 @@ exports.signinAgent = function(req, res) {
 			var agentID = agent._id.toString();
 			var prev_page = '/agents/' + agentID + '#';
 			var next_page = '/agents/' + agentID + '?page=2';
-			agent_facade.getCustomers(agentID, page_num, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, {}, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
 					customers: customers,
@@ -220,6 +222,7 @@ exports.getCustomer = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var params = req.query;
 	var page_num = req.query.page;
 	if (!page_num) page_num = 1;
 	else page_num = parseInt(page_num);
@@ -231,8 +234,7 @@ exports.getCustomer = function(req, res) {
 	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
 
 	agent_facade.getCustomer(customerID, function(customer) {
-		console.log('got customer');
-		agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
+		agent_facade.getContactHistory(agentID, customerID, page_num, params, function(contactHistory) {
 			res.render('customer', {
 				agentID: agentID,
 				customer: customer,
@@ -346,7 +348,7 @@ exports.updateCustomer = function(req, res){
 					if( (curr_update - last_update) >= oneWeek ){
 						agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
 							agent_facade.getAgent(agentID, function(agent) {
-								agent_facade.getCustomers(agentID, page_num, function(customers) {
+								agent_facade.getCustomers(agentID, page_num, {}, function(customers) {
 									res.render('agentHome', {
 										agent: agent,
 										customers: customers,
@@ -364,7 +366,8 @@ exports.updateCustomer = function(req, res){
 				}else{
 					agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
 						agent_facade.getAgent(agentID, function(agent) {
-							agent_facade.getCustomers(agentID, page_num, function(customers) {
+							agent_facade.getCustomers(agentID, page_num, {},
+							 function(customers) {
 								res.render('agentHome', {
 									agent: agent,
 									customers: customers,
@@ -416,7 +419,7 @@ exports.updateAgent = function(req, res) {
 
 	agent_facade.updateAgent(agentID, agentInfo, function(agent) {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, page_num, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, {}, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
 					customers: customers,
@@ -454,6 +457,16 @@ exports.searchCustomers = function(req, res) {
 			agentID: agentID,
 			customers: customers,
 			query: query
+		});
+	});
+};
+
+exports.getAllContacts = function(req, res) {
+	var query = req.query;
+
+	agent_facade.getAllContacts(query, function(contacts) {
+		res.render('allcontacts', {
+			contacts: contacts
 		});
 	});
 };
