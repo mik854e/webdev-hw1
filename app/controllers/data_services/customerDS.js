@@ -31,6 +31,12 @@ exports.getCustomers = function(agentID, limit, skip, callback) {
 	});
 };
 
+exports.getCustomerCount = function (agentID, callback){
+	Customer.count( {agentID: agentID}, function(err, customers){
+		callback(customers);
+	});
+};
+
 exports.updateCustomer = function(customerID, newInfo, callback) {
 	Customer.update( 
 			{ _id: customerID }, 

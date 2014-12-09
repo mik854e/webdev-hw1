@@ -61,6 +61,7 @@ exports.getAgentState = function(agentID, callback){
 	}); 
 };
 
+// @ Depreciated 
 exports.getAgentCustomerCount = function(agentID, callback){
 	Agent.findOne({ _id: agentID }, function(err, agent){
 		callback(agent.customer_count);

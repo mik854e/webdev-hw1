@@ -41,12 +41,6 @@ exports.getAgents = function(page_num, callback) {
 
 exports.updateAgent = function(agent, newInfo, callback) {
 	agentDS.updateAgent(agent, newInfo, callback);
-	/*
-	agentDS.updateAgent(function (agent, newInfo) {
-		console.log(agent);
-		callback(agent, newInfo);
-	});
-*/
 };
 
 // Contact
@@ -89,27 +83,11 @@ exports.deleteContact = function(contactID, callback) {
 
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
-	console.log('customer info ' + customerInfo.firstName);
-	agentDS.getAgentState(customerInfo.agentID, function(agent_state){		
-		agentDS.getAgentCustomerCount(customerInfo.agentID, function(agent_count){
-			if( (agent_state !== 'TX') || (agent_state !== 'NY') ){
-				console.log('Count: ' +agent_count);
-				if(agent_count <= 5){
-					console.log('customer Added');
-					customerDS.createCustomer(customerInfo, callback);
-					agentDS.updateCustomerCount(customerInfo.agentID, agent_count+1,function(new_count){});
-				}else {
-					//alert('ERROR: Exceeded customer limit. Cannot add customer to agent');
-					console.log('ERROR: Exceeded customer limit. Cannot add customer to agent');
-				}
-			}else{
-				console.log('customer Added');
-				console.log('customer info');
-				customerDS.createCustomer(customerInfo, callback);
-				agentDS.updateCustomerCount(customerInfo.agentID, agent_count + 1 ,function(new_count){});
-			}
-		});
-	});
+	customerDS.createCustomer(customerInfo, callback);
+};
+
+exports.getCustomerCount = function(agentID, callback){
+	customerDS.getCustomerCount(agentID, callback);
 };
 
 exports.deleteCustomer = function(customerID, callback) {
@@ -154,4 +132,8 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 			}
 		});
 	});
+};
+
+exports.getAgentState = function(agentID, callback){
+	agentDS.getAgentState(agentID, callback);
 };

@@ -2,7 +2,8 @@
 
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
-	agent_facade = require('./facades/agent_facade.js');
+	agent_facade = require('./facades/agent_facade.js'),
+	customer_facade = require('./facades/customer_facade.js');
 
 var HOST = 'http://localhost:3000';
 
@@ -35,7 +36,7 @@ exports.createCustomer = function(req, res) {
 	
 	var prev_page = '/agents/' + agentID + '#';
 	var next_page = '/agents/' + agentID + '?page=2';
-
+/*
 	agent_facade.createCustomer(customerInfo, function(customer) {
 		agent_facade.getAgent(agentID, function(agent) {
 			agent_facade.getCustomers(agentID, 1, function(customers) {
@@ -48,6 +49,44 @@ exports.createCustomer = function(req, res) {
 			});
 		});
 	});
+*/
+	agent_facade.createCustomer(customerInfo, function (customer){
+		agent_facade.getAgentState(agentID, function(agentState){
+			customer_facade.getCustomerCount(agentID, function(agent_customer_count){
+				if ( (agentState !== 'TX') || (agentState !== 'NY') ){
+						if(agent_customer_count <= 5){
+							agent_facade.getAgent(agentID, function(agent) {
+								agent_facade.getCustomers(agentID, 1, function(customers) {
+									res.render('agenthome', {
+										agent: agent,
+										customers: customers,
+										prev_page: prev_page,
+										next_page: next_page
+									});
+								});
+							});
+						}else{
+							res.render('success', {
+								msg: 'Exceeded Customer Limit: Cannot assign a new customer'
+							});
+						}
+				}else{
+					agent_facade.getAgent(agentID, function(agent) {
+						agent_facade.getCustomers(agentID, 1, function(customers) {
+							res.render('agenthome', {
+							agent: agent,
+							customers: customers,
+							prev_page: prev_page,
+							next_page: next_page
+							});
+						});
+					});		
+				}
+			});
+		});
+		
+	});
+		
 };
 
 exports.deleteCustomer = function(req, res) {

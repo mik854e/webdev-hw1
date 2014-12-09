@@ -68,5 +68,9 @@ exports.updateCustomer = function(agentID, customerID, newInfo, callback){
 	crm_services.updateCustomer(agentID, customerID, newInfo, callback);
 };
 
+exports.getAgentState = function (agentID, callback){
+	crm_services.getAgentState(agentID, callback);
+};
+
 
 
