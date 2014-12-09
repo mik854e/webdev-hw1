@@ -33,14 +33,14 @@ ITEMS = {
 			'desc:': 'A cotton crew neck T-shirt',
 			'size:': 'Medium',
 			'color': 'White',
-			'quantity': '5'
+			'quantity': '5',
 			'aws': '' },
 		'TS-1000-B-L': {
 			'name' : 'T-Shirt',
 			'desc:': 'A cotton crew neck T-shirt',
 			'size:': 'Large',
 			'color': 'Blue',
-			'quantity': '0'
+			'quantity': '0',
 			'aws': '' },
 		'TS-1000-R-S': {
 			'name' : 'T-Shirt',
@@ -48,7 +48,7 @@ ITEMS = {
 			'size:': 'Small',
 			'color': 'Red',
 			'quantity': '0',
-			'aws': '' }
+			'aws': '' },
 		'TS-1000-W-M': {
 			'name' : 'T-Shirt',
 			'desc:': 'A cotton crew neck T-shirt',
