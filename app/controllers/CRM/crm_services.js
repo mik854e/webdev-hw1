@@ -3,11 +3,14 @@
 var agentDS = require('../data_services/agentDS.js');
 var contactDS = require('../data_services/contactDS.js');
 var customerDS = require('../data_services/customerDS.js');
+var subscriptionDS = require('../data_services/subscriptionDS.js');
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	Contact = mongoose.model('Contact'),
 	Customer = mongoose.model('Customer'),
 	Agent = mongoose.model('Agent');
+var amqp = require('amqplib');
+var when = require('when');
 
 var OBJ_LIMIT = 5;
 
@@ -96,7 +99,13 @@ exports.createCustomer = function(customerInfo, callback) {
 				console.log('Count: ' +agent_count);
 				if(agent_count <= 5){
 					console.log('customer Added');
-					customerDS.createCustomer(customerInfo, callback);
+					customerDS.createCustomer(customerInfo, function(customer) {
+						console.log(customer);
+						var routingKey = 'crm.customer.id.' + customer.firstName + '.agentid.' + 
+										  customer.agentID + '.zipcode.' + customer.zip + '.created';
+						sendMessage(routingKey, 'Customer has been created');
+						callback();
+					});
 					agentDS.updateCustomerCount(customerInfo.agentID, agent_count+1,function(new_count){});
 				}else {
 					//alert('ERROR: Exceeded customer limit. Cannot add customer to agent');
@@ -105,7 +114,13 @@ exports.createCustomer = function(customerInfo, callback) {
 			}else{
 				console.log('customer Added');
 				console.log('customer info');
-				customerDS.createCustomer(customerInfo, callback);
+				customerDS.createCustomer(customerInfo, function(customer) {
+					console.log(customer);
+					var routingKey = 'crm.customer.id.' + customer.firstName + '.agentid.' + 
+									  customer.agentID + '.zipcode.' + customer.zip + '.created';
+					sendMessage(routingKey, 'Customer has been created');
+					callback();
+				});
 				agentDS.updateCustomerCount(customerInfo.agentID, agent_count + 1 ,function(new_count){});
 			}
 		});
@@ -154,4 +169,38 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 			}
 		});
 	});
+};
+
+exports.createSubscription = function(routingKey, agent, callback) {
+	subscriptionDS.getSubscription(routingKey, function(subscription) {
+		if (subscription == null) {
+			subscriptionDS.createSubscription(routingKey, agent, function(subscription) {
+				console.log(subscription);
+				callback(subscription);
+			});
+		} else {
+			subscriptionDS.updateSubscription(routingKey, agent, function(subscription) {
+				callback(subscription);
+			});
+		}
+	});
+};
+
+exports.getSubscriptionsForAgent = function(agentID, callback) {
+	subscriptionDS.getSubscriptionsForAgent(agentID, callback);
+};
+
+
+var sendMessage = function(routingKey, message) {
+	amqp.connect('amqp://localhost').then(function(conn) {
+		return when(conn.createChannel().then(function(ch) {
+			var ex = 'topic_logs';
+			var ok = ch.assertExchange(ex, 'topic', {durable: false});
+			return ok.then(function() {
+				ch.publish(ex, routingKey, new Buffer(message));
+				console.log(" [x] Sent %s:'%s'", routingKey, message);
+				return ch.close();
+			});
+		})).ensure(function() { conn.close(); })
+	}).then(null, console.log);
 };
