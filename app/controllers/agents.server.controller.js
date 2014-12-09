@@ -54,12 +54,18 @@ exports.deleteCustomer = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.deleteCustomer(customerID, function() {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -378,6 +384,19 @@ exports.deleteAgent = function(req, res) {
 				prev_page: prev_page,
 				next_page: next_page
 			});
+		});
+	});
+};
+
+exports.searchCustomers = function(req, res) {
+	var agentID = req.params.agentID;
+	var query = req.body.query;
+
+	agent_facade.searchCustomers(agentID, query, function(customers) {
+		res.render('customersearch', {
+			agentID: agentID,
+			customers: customers,
+			query: query
 		});
 	});
 };

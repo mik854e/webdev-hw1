@@ -14,7 +14,6 @@ exports.createCustomer = function(customerInfo, callback) {
 
 exports.getCustomer = function(customerID, callback) {
 	Customer.findOne({ _id: customerID }, function(err, customer) {
-		console.log('getCusteomr: ' + customer);
 		callback(customer);
 	});
 };
@@ -27,6 +26,18 @@ exports.getCustomerByEmail = function(email, password, callback) {
 
 exports.getCustomers = function(agentID, limit, skip, callback) {
 	Customer.find({ agentID: agentID }).limit(limit).skip(skip).exec(function(err, customers) {
+		callback(customers);
+	});
+};
+
+exports.searchCustomers = function(agentID, callback) {
+	Customer.find({ agentID: agentID }).exec(function(err, customers) {
+		callback(customers);
+	});
+};
+
+exports.searchCustomersByName = function(agentID, query, callback) {
+	Customer.find({ agentID: agentID, $or: [{firstName: {$regex: query}}, {lastName: {$regex: query}}] }).exec(function(err, customers) {
 		callback(customers);
 	});
 };

@@ -94,7 +94,7 @@ exports.createCustomer = function(customerInfo, callback) {
 		agentDS.getAgentCustomerCount(customerInfo.agentID, function(agent_count){
 			if( (agent_state !== 'TX') || (agent_state !== 'NY') ){
 				console.log('Count: ' +agent_count);
-				if(agent_count <= 5){
+				if(!agent_count || agent_count <= 5){
 					console.log('customer Added');
 					customerDS.createCustomer(customerInfo, callback);
 					agentDS.updateCustomerCount(customerInfo.agentID, agent_count+1,function(new_count){});
@@ -154,4 +154,9 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 			}
 		});
 	});
+};
+
+exports.searchCustomers = function(agentID, query, callback) {
+	var regex = new RegExp('.*' + query + '.*', 'i');
+	customerDS.searchCustomersByName(agentID, regex, callback);
 };
