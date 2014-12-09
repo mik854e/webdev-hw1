@@ -17,11 +17,6 @@ queue_name = result.method.queue
 
 agent_id = sys.argv[1]
 
-# binding_keys = sys.argv[1:]
-# if not binding_keys:
-#     print >> sys.stderr, "Usage: %s [binding_key]..." % (sys.argv[0],)
-#     sys.exit(1)
-
 # get the binding keys for the agent through a rest call
 url = 'http://localhost:3000/subscriptions/' + agent_id
 response = urllib2.urlopen(url)
