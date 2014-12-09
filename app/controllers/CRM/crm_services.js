@@ -86,7 +86,13 @@ exports.deleteContact = function(contactID, callback) {
 
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
-	customerDS.createCustomer(customerInfo, callback);
+	customerDS.createCustomer(customerInfo, function(customer) {
+		console.log(customer);
+		var routingKey = 'crm.customer.id.' + customer.firstName + '.agentid.' +
+			customer.agentID + '.zipcode.' + customer.zip + '.created';
+		sendMessage(routingKey, 'Customer has been created');
+		callback();
+	});
 };
 
 exports.getCustomerCount = function(agentID, callback){
