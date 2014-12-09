@@ -8,7 +8,7 @@ var _ = require('lodash'),
 exports.createCustomer = function(customerInfo, callback) {
 	var customer = new Customer(customerInfo);
 	customer.save(function(err, customer) {
-		callback();
+		callback(customer);
 	});
 };
 
