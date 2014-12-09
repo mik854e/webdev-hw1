@@ -2,7 +2,8 @@
 
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
-	agent_facade = require('./facades/agent_facade.js');
+	agent_facade = require('./facades/agent_facade.js'),
+	customer_facade = require('./facades/customer_facade.js');
 
 var HOST = 'http://localhost:3000';
 
@@ -36,30 +37,62 @@ exports.createCustomer = function(req, res) {
 	var prev_page = '/agents/' + agentID + '#';
 	var next_page = '/agents/' + agentID + '?page=2';
 
-	agent_facade.createCustomer(customerInfo, function(customer) {
-		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, 1, function(customers) {
-				res.render('agenthome', {
-					agent: agent,
-					customers: customers,
-					prev_page: prev_page,
-					next_page: next_page
-				});
+	
+		agent_facade.getAgentState(agentID, function(agentState){
+			customer_facade.getCustomerCount(agentID, function(agent_customer_count){
+				if ( (agentState !== 'TX') || (agentState !== 'NY') ){
+						if(agent_customer_count <= 5){
+							agent_facade.createCustomer(customerInfo, function (customer){
+								agent_facade.getAgent(agentID, function(agent) {
+									agent_facade.getCustomers(agentID, 1, function(customers) {
+										res.render('agenthome', {
+											agent: agent,
+											customers: customers,
+											prev_page: prev_page,
+											next_page: next_page
+										});
+									});
+								});
+							});
+						}else{
+							res.render('success', {
+								msg: 'Exceeded Customer Limit: Cannot assign a new customer'
+							});
+						}
+				}else{
+					agent_facade.createCustomer(customerInfo, function (customer){
+						agent_facade.getAgent(agentID, function(agent) {
+							agent_facade.getCustomers(agentID, 1, function(customers) {
+								res.render('agenthome', {
+									agent: agent,
+									customers: customers,
+									prev_page: prev_page,
+									next_page: next_page
+								});
+							});
+						});
+					});		
+				}
 			});
-		});
-	});
+		});		
 };
 
 exports.deleteCustomer = function(req, res) {
 	var agentID = req.params.agentID;
 	var customerID = req.params.customerID;
 
+	var page_num = 1;
+	var prev_page = '/agents/' + agentID + '#';
+	var next_page = '/agents/' + agentID + '?page=2';
+
 	agent_facade.deleteCustomer(customerID, function() {
 		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, function(customers) {
+			agent_facade.getCustomers(agentID, page_num, function(customers) {
 				res.render('agenthome', {
 					agent: agent,
-					customers: customers
+					customers: customers,
+					prev_page: prev_page,
+					next_page: next_page
 				});
 			});
 		});
@@ -302,19 +335,48 @@ exports.updateCustomer = function(req, res){
 	var prev_page = '/agents/' + agentID + '#';
 	var next_page = '/agents/' + agentID + '?page=2';
 
-	agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
-		agent_facade.getAgent(agentID, function(agent) {
-			agent_facade.getCustomers(agentID, page_num, function(customers) {
-				res.render('agentHome', {
-					agent: agent,
-					customers: customers,
-					prev_page: prev_page,
-					next_page: next_page
-				});
+
+	
+		agent_facade.getCustomer(customerID, function(old_customerInfo){
+			agent_facade.getAgentState(agentID, function(agentState){
+					var oneWeek = 604800000;
+				if ((agentState !== 'MN') || (agentState !== 'CT')) {
+					var last_update = old_customerInfo.update_timestamp.valueOf();
+					var curr_update = update_timestamp.valueOf();
+					if( (curr_update - last_update) >= oneWeek ){
+						agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
+							agent_facade.getAgent(agentID, function(agent) {
+								agent_facade.getCustomers(agentID, page_num, function(customers) {
+									res.render('agentHome', {
+										agent: agent,
+										customers: customers,
+										prev_page: prev_page,
+										next_page: next_page
+									});
+								});
+							});
+						});
+					}else{
+						res.render('success', {
+									msg: 'Cannot Update customer information more than once a week'
+						});
+					}
+				}else{
+					agent_facade.updateCustomer(customerID, customerInfo, function(customer) {
+						agent_facade.getAgent(agentID, function(agent) {
+							agent_facade.getCustomers(agentID, page_num, function(customers) {
+								res.render('agentHome', {
+									agent: agent,
+									customers: customers,
+									prev_page: prev_page,
+									next_page: next_page
+								});
+							});
+						});
+					});
+				}
 			});
 		});
-	});
-
 };
 
 exports.deleteContact = function(req, res) {
@@ -379,6 +441,19 @@ exports.deleteAgent = function(req, res) {
 				prev_page: prev_page,
 				next_page: next_page
 			});
+		});
+	});
+};
+
+exports.searchCustomers = function(req, res) {
+	var agentID = req.params.agentID;
+	var query = req.body.query;
+
+	agent_facade.searchCustomers(agentID, query, function(customers) {
+		res.render('customersearch', {
+			agentID: agentID,
+			customers: customers,
+			query: query
 		});
 	});
 };

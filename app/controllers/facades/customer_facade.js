@@ -34,3 +34,7 @@ exports.setRandomAgent = function(customerID, callback) {
 		});
 	});
 };
+
+exports.getCustomerCount = function(agentID, callback){
+	crm_services.getCustomerCount(agentID, callback);
+};

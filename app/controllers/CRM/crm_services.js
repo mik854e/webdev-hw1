@@ -44,12 +44,6 @@ exports.getAgents = function(page_num, callback) {
 
 exports.updateAgent = function(agent, newInfo, callback) {
 	agentDS.updateAgent(agent, newInfo, callback);
-	/*
-	agentDS.updateAgent(function (agent, newInfo) {
-		console.log(agent);
-		callback(agent, newInfo);
-	});
-*/
 };
 
 // Contact
@@ -92,39 +86,11 @@ exports.deleteContact = function(contactID, callback) {
 
 // Customer
 exports.createCustomer = function(customerInfo, callback) {
-	console.log('customer info ' + customerInfo.firstName);
-	agentDS.getAgentState(customerInfo.agentID, function(agent_state){		
-		agentDS.getAgentCustomerCount(customerInfo.agentID, function(agent_count){
-			if( (agent_state !== 'TX') || (agent_state !== 'NY') ){
-				console.log('Count: ' +agent_count);
-				if(agent_count <= 5){
-					console.log('customer Added');
-					customerDS.createCustomer(customerInfo, function(customer) {
-						console.log(customer);
-						var routingKey = 'crm.customer.id.' + customer.firstName + '.agentid.' + 
-										  customer.agentID + '.zipcode.' + customer.zip + '.created';
-						sendMessage(routingKey, 'Customer has been created');
-						callback();
-					});
-					agentDS.updateCustomerCount(customerInfo.agentID, agent_count+1,function(new_count){});
-				}else {
-					//alert('ERROR: Exceeded customer limit. Cannot add customer to agent');
-					console.log('ERROR: Exceeded customer limit. Cannot add customer to agent');
-				}
-			}else{
-				console.log('customer Added');
-				console.log('customer info');
-				customerDS.createCustomer(customerInfo, function(customer) {
-					console.log(customer);
-					var routingKey = 'crm.customer.id.' + customer.firstName + '.agentid.' + 
-									  customer.agentID + '.zipcode.' + customer.zip + '.created';
-					sendMessage(routingKey, 'Customer has been created');
-					callback();
-				});
-				agentDS.updateCustomerCount(customerInfo.agentID, agent_count + 1 ,function(new_count){});
-			}
-		});
-	});
+	customerDS.createCustomer(customerInfo, callback);
+};
+
+exports.getCustomerCount = function(agentID, callback){
+	customerDS.getCustomerCount(agentID, callback);
 };
 
 exports.deleteCustomer = function(customerID, callback) {
@@ -147,28 +113,7 @@ exports.getCustomers = function(agentID, page_num, callback) {
 };
 
 exports.updateCustomer = function(customerID, newInfo, callback) {
-	console.log('update a customer in crm called');
-	var oneWeek = 604800000;
-	customerDS.getCustomer(customerID, function(customer) {
-		agentDS.getAgentState(customer.agentID, function(agent_state) {
-			if ((agent_state !== 'MN') || (agent_state !== 'CT')) {
-				var last_update = customer.update_timestamp.valueOf();
-				var curr_update = newInfo.update_timestamp.valueOf();
-				if ( (curr_update - last_update) >= oneWeek ) {
-					console.log('Update customer');
-					customerDS.updateCustomer(customerID, newInfo, callback);
-				} 
-				else {
-					console.log('ERROR: Customer information cannot be updated. One Week has not passed');
-					// ALERT
-				}
-			} 
-			else {
-				console.log('Update customer');
-				customerDS.updateCustomer(customerID, newInfo, callback);
-			}
-		});
-	});
+	customerDS.updateCustomer(customerID, newInfo, callback);
 };
 
 exports.createSubscription = function(routingKey, agent, callback) {
@@ -190,7 +135,6 @@ exports.getSubscriptionsForAgent = function(agentID, callback) {
 	subscriptionDS.getSubscriptionsForAgent(agentID, callback);
 };
 
-
 var sendMessage = function(routingKey, message) {
 	amqp.connect('amqp://localhost').then(function(conn) {
 		return when(conn.createChannel().then(function(ch) {
@@ -203,4 +147,13 @@ var sendMessage = function(routingKey, message) {
 			});
 		})).ensure(function() { conn.close(); })
 	}).then(null, console.log);
+};
+
+exports.getAgentState = function(agentID, callback){
+	agentDS.getAgentState(agentID, callback);
+};
+
+exports.searchCustomers = function(agentID, query, callback) {
+	var regex = new RegExp('.*' + query + '.*', 'i');
+	customerDS.searchCustomersByName(agentID, regex, callback);
 };
