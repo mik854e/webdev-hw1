@@ -116,3 +116,8 @@ exports.updateCustomer = function(customerID, newInfo, callback) {
 exports.getAgentState = function(agentID, callback){
 	agentDS.getAgentState(agentID, callback);
 };
+
+exports.searchCustomers = function(agentID, query, callback) {
+	var regex = new RegExp('.*' + query + '.*', 'i');
+	customerDS.searchCustomersByName(agentID, regex, callback);
+};

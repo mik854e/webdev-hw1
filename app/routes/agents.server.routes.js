@@ -7,21 +7,23 @@ module.exports = function(app) {
 	app.route('/agents/:agentID').get(agent.getAgent);
 	app.route('/agents/create').post(agent.createAgent);
 	app.route('/agents/home').post(agent.signinAgent);
+
 	app.route('/agents/:agentID/customers/add').post(agent.createCustomer);
+	app.route('/agents/:agentID/customers/search').post(agent.searchCustomers);
+	app.route('/agents/:agentID/customers').get(agent.deleteCustomer);
 	app.route('/agents/:agentID/customers/:customerID').get(agent.getCustomer);
 	app.route('/agents/:agentID/customers/:customerID/contacts/add').post(agent.createContact);
 	app.route('/agents/:agentID/customers/:customerID/contacts/:contactID/delete').post(agent.deleteContact);
 	app.route('/agents/:agentID/customers/:customerID/update').get(agent.getCustomerUpdate);
 	app.route('/agents/:agentID/customers/:customerID').post(agent.updateCustomer);
 	app.route('/agents/:agentID/customers/:customerID/delete').get(agent.deleteCustomer);	
+
 	app.route('/agents/:agentID/update').get(agent.getAgentUpdate);
 	app.route('/agents/:agentID').post(agent.updateAgent);
 	app.route('/agents/:agentID/delete').get(agent.deleteAgent);
-	// app.route('/agents/:id').delete(agent.deleteAgent);
+
 	
-	app.route('/agents/:agentID/customers').get(agent.deleteCustomer);
-	// app.route('/agents/:id/customers').get(agent.getCustomers);
-	
+	// Queueing
 	app.route('/createAgent').post(agent.createAgent);
 	app.route('/updateAgent').post(agent.updateAgent);
 	app.route('/deleteAgent').post(agent.deleteAgent);

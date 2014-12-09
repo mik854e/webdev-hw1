@@ -30,8 +30,20 @@ exports.getCustomers = function(agentID, limit, skip, callback) {
 	});
 };
 
-exports.getCustomerCount = function (agentID, callback){
-	Customer.count( {agentID: agentID}, function(err, customers){
+exports.getCustomerCount = function (agentID, callback) {
+	Customer.count( {agentID: agentID}, function(err, customers) {
+		callback(customers);
+	});
+};
+
+exports.searchCustomers = function(agentID, callback) {
+	Customer.find({ agentID: agentID }).exec(function(err, customers) {
+		callback(customers);
+	});
+};
+
+exports.searchCustomersByName = function(agentID, query, callback) {
+	Customer.find({ agentID: agentID, $or: [{firstName: {$regex: query}}, {lastName: {$regex: query}}] }).exec(function(err, customers) {
 		callback(customers);
 	});
 };

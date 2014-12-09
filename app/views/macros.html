@@ -1,0 +1,44 @@
+{% macro personalinfo_form(header, button_title) -%}
+		<h3>{{header}}</h3>
+		<fieldset>
+			<div class="form-group">
+				<label for="firstName">First Name: </label>
+				<input type="text" class="form-control" id="firstName" name="firstName" required>
+			</div>
+			<div class="form-group">
+				<label for="lasttName">Last Name: </label>
+				<input type="text" class="form-control" id="lastName" name="lastName" required>
+			</div>
+			<div class="form-group">
+				<label for="phoneNumber">Phone: </label>
+				<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+			</div>
+			<div class="form-group">
+				<label for="email">Email: </label>
+				<input type="text" class="form-control" id="email" name="email" required>
+			</div>
+			<div class="form-group">
+		        <label for="street">Street</label>
+		        <input class="form-control" type="text" id="street" name="street" required>
+		    </div>
+		    <div class="form-group">
+		        <label for="city">City</label>
+		        <input class="form-control" type="text" id="city" name="city" required>
+		    </div>
+		    <div class="form-group">
+		        <label for="zip">Zip</label>
+		        <input class="form-control" type="text" id="zip" name="zip" required>
+		    </div>
+		    <div class="form-group">
+		        <label for="state">State</label>
+		        <input class="form-control" type="text" id="state" name="state" required>
+		    </div>
+			<div class="form-group">
+				<label for="password">Password: </label>
+				<input type="password" class="form-control" id="password" name="password" required>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-default">{{button_title}}</button>
+			</div>
+		</fieldset>
+{%- endmacro %}
