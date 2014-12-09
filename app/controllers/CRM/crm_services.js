@@ -110,28 +110,7 @@ exports.getCustomers = function(agentID, page_num, callback) {
 };
 
 exports.updateCustomer = function(customerID, newInfo, callback) {
-	console.log('update a customer in crm called');
-	var oneWeek = 604800000;
-	customerDS.getCustomer(customerID, function(customer) {
-		agentDS.getAgentState(customer.agentID, function(agent_state) {
-			if ((agent_state !== 'MN') || (agent_state !== 'CT')) {
-				var last_update = customer.update_timestamp.valueOf();
-				var curr_update = newInfo.update_timestamp.valueOf();
-				if ( (curr_update - last_update) >= oneWeek ) {
-					console.log('Update customer');
-					customerDS.updateCustomer(customerID, newInfo, callback);
-				} 
-				else {
-					console.log('ERROR: Customer information cannot be updated. One Week has not passed');
-					// ALERT
-				}
-			} 
-			else {
-				console.log('Update customer');
-				customerDS.updateCustomer(customerID, newInfo, callback);
-			}
-		});
-	});
+	customerDS.updateCustomer(customerID, newInfo, callback);
 };
 
 exports.getAgentState = function(agentID, callback){
