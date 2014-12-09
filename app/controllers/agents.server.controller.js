@@ -231,6 +231,7 @@ exports.getCustomer = function(req, res) {
 	var next_page = '/agents/' + agentID + '/customers/' + customerID + '?page=' + (page_num+1).toString();
 
 	agent_facade.getCustomer(customerID, function(customer) {
+		console.log('got customer');
 		agent_facade.getContactHistory(agentID, customerID, page_num, function(contactHistory) {
 			res.render('customer', {
 				agentID: agentID,
@@ -488,3 +489,4 @@ exports.updateAgentAsync = function(req, res) {
 		poll_url: poll_url
 	});
 };
+
