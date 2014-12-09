@@ -4,8 +4,7 @@ import StringIO
 import os
 
 BASE_PATH = 's3'
-MEDIA_PATH = 's3/media'
-loc_path = '/s3/media'
+MEDIA_PATH = 'media'
 BUCKET_NAME = 'commerce-bucket'
 
 conn = boto.connect_s3(
@@ -43,17 +42,16 @@ def upload_image(img):
 	k.set_metadata("Content-Type", 'images/jpeg')
 	k.set_contents_from_filename(file_path)
 
-
 def upload_file(file_name, directory=''):
 	from boto.s3.key import Key
 	full_key_name = os.path.join(PATH, directory, file_name)
 	print(full_key_name)
 	k = Key(my_bucket)
-	k.set_contents_from_filename(StringIO(full_key_name))
+	k.set_contents_from_filename(full_key_name)
 
 def get_file_url(file_name):
 	from boto.s3.key import Key
-	full_key_name = os.path.join(MEDIA_PATH, img)
+	full_key_name = os.path.join(MEDIA_PATH, file_name)
 	k = Key(my_bucket)
 	key = my_bucket.get_key(full_key_name)
 	url = key.generate_url(0, query_auth=False, force_http=True)
@@ -61,9 +59,12 @@ def get_file_url(file_name):
 
 def delete_file(file_name, directory=MEDIA_PATH ):
 	from boto.s3.key import Key
-	full_key_name = os.path.join(directory, img)
+	full_key_name = os.path.join(directory, file_name)
 	k = Key(my_bucket)
 	key = my_bucket.get_key(full_key_name)
-	bucket.delete_key(key)
+	my_bucket.delete_key(key)
 
-upload_image('hoodie.jpeg')
+upload_image('pants.jpeg')
+print(get_file_url('pants.jpeg'))
+#print(get_file_url('hoodie.jpeg'))
+
