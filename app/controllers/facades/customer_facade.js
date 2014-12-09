@@ -8,12 +8,16 @@ exports.getAgent = function(agentID, callback) {
 	crm_services.getAgent(agentID, callback);
 };
 
+exports.getCustomers = function(page_num, params, callback) {
+	crm_services.getCustomers(null, page_num, params, callback);
+};
+
 exports.getContactHistory = function(agentID, customerID, page_num, callback) {
 	crm_services.getContactHistory(agentID, customerID, page_num, callback);
 };
 
 exports.getFullContactHistory = function(agentID, customerID, callback) {
-	crm_services.getFullContactHistory(agentID, customerID, callback);
+	crm_services.getFullContactHistory(agentID, customerID, {}, callback);
 };
 
 exports.getCustomerByEmail = function(email, password, callback) {

@@ -4,6 +4,27 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	customer_facade = require('./facades/customer_facade.js');
 
+exports.getCustomers = function(req, res) {
+	var page_num = req.query.page;
+	var params = req.query;
+	if (!page_num) page_num = 1;
+	else page_num = parseInt(page_num);
+
+	var prev_page;
+	if (page_num > 1) prev_page = '/customers?page=' + (page_num-1).toString();
+	else prev_page = '/customers/#';
+
+	var next_page = '/customers?page=' + (page_num+1).toString();
+
+	customer_facade.getCustomers(page_num, params, function(customers) {
+		res.render('allcustomers', {
+			customers: customers,
+			prev_page: prev_page,
+			next_page: next_page
+		});
+	});
+};
+
 exports.signInCustomer = function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;

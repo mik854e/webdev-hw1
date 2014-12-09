@@ -32,8 +32,10 @@ exports.getAgentByEmail = function(email, password, callback) {
 	});
 };
 
-exports.getAgents = function(limit, skip, callback) {
-	Agent.find({}).limit(limit).skip(skip).exec(function(err, agents) {
+exports.getAgents = function(limit, skip, params, callback) {
+	//console.log(params);
+	Agent.find(params).limit(limit).skip(skip).exec(function(err, agents) {
+		if (err) console.log(err);
 		callback(agents);
 	});
 };

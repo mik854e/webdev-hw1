@@ -18,8 +18,8 @@ exports.getContactHistory = function(agentID, customerID, limit, skip, callback)
 	});
 };
 
-exports.getFullContactHistory = function(agentID, customerID, callback) {
-	Contact.find({agentID: agentID, customerID: customerID}, function(err, contacts) {
+exports.getFullContactHistory = function(params, callback) {
+	Contact.find(params, function(err, contacts) {
 		callback(contacts);
 	});
 };
